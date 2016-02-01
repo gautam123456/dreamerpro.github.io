@@ -1,106 +1,51 @@
-<!-- document html-->
-<html lang="en">
+<html ng-app="lookplex">
 <head>
-	<title>ThinkMerit</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="css/main.css">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
-	<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="js/main-v1.js"></script>
+	<title>Lookplex</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link type="text/css" href="/css/bootstrap.min.css" rel="stylesheet"></link>
+	<link type="text/css" href="/css/bootstrap-theme.min.css" rel="stylesheet"></link>
+	<link type="text/css" href="/css/font-awesome.min.css" rel="stylesheet"></link>
+	<link type="text/css" href="/css/main.css" rel="stylesheet"></link>
 </head>
 
 <body>
-<div class="page-header">
-	<div class="container">
-		<a href="index.html" class="logo"><img src="images/logo.png"><h3>ThinkMerit</h3></a>
-		<div class="top-acc pull-right">
-			<ul>
-				<li><i class="fa fa-search"></i></li>
-				<li><a href="#">Login</a></li>
-				<li><a href="#">Signup</a></li>
-			</ul>
-		</div>
+<header>
+	<span class="pull-left navbar-toggle">
+		<i class="fa fa-bars"></i>
+	</span>
+	<div class="clearfix logo">
+		<a href="/#">LookPlex<!-- <img src="images/logonew.png"> --></a>
 	</div>
-</div>
-<div class="jumbotron">
-	
-	<div class="cover">
-		<img src="images/cover.jpg"> 
-		<!-- <h2 class="tagline">Make <strong><i>Better decision</i></strong> about your <strong><i>Education.</i></strong></h2> -->
-	</div>
-	
+</header>
+<div class="content" ng-view>
 	
 </div>
-<div class="container catalog">
-	<div class="row">
-		<a href="physics.html" class="col-md-4">
-			<img src="images/gears.svg">
-			<span class="le"></span>
-			<h3 class="">Physics</h3>
-		</a>
-		<a class="col-md-4">
-			<img src="images/chemistry.svg">
-			<span class="le"></span>
-			<h3 class="">Chemistry</h3>
-		</a>
-		<a class="col-md-4">
-			<img src="images/maths.svg">
-			<span class="le"></span>
-			<h3 class="">Maths</h3>
-		</a>
-	</div>
-	<div class="row">
-		<a class="col-md-4">
-			<img src="images/question_bank.svg">
-			<span class="le"></span>
-			<h3 class="">Question Bank</h3>
-		</a>
-		<a class="col-md-4">
-			<img src="images/test_series.svg">
-			<span class="le"></span>
-			<h3 class="">Test Series</h4>
-		</a>
-		<a class="col-md-4">
-			<img src="images/video_lectures.svg">
-			<span class="le"></span>
-			<h3 class="">Video Lectures</h3>
-		</a>
-	</div>
-</div>
-<div class="page-footer">
-<div class="container ">
-	<div class="col-md-4">
-		<h4>ThinkMerit</h4>
-		<ul class="footer-menu">
-			<li><a href="#">About</a></li>
-			<li><a href="#">Why choose us?</a></li>
-			<li><a href="#">Careers</a></li>
-			<li><a href="#">Help & FAQ</a></li>	
-			<li><a href="#">Contact Us</a></li>
+
+<footer>
+	<div>
+		<ul class="footer-list">
+			<li><a href="/#" >About us</a> </li>
+			<li><a href="/#" >Contact us</a> </li>
+			<li><a href="/#" >Free Listing</a> </li>
+			<li><a href="/#" >Advertise</a> </li>
+			<li><a href="/#" >Privacy</a> </li>
+			<li><a href="/#" >Terms of Service</a> </li>
 		</ul>
 	</div>
-	<div class="col-md-4">
-		<h4>Student Resource</h4>
-		<ul class="footer-menu">
-			<li><a href="#">Blogs</a></li>
-			<li><a href="#">Notes</a></li>
-			<li><a href="#">Question Bank</a></li>
-			<li><a href="#">Test Series</a></li>
-			<li><a href="#">JEE Archive</a></li>
-		</ul>
+	<div class="clearfix fs">
+		<a href="/#" class="fs-item"><i class="fa fa-facebook fa-2x"></i> </a>
+		<a href="/#" class="fs-item"><i class="fa fa-twitter fa-2x"></i></a>
+		<a href="/#" class="fs-item"><i class="fa fa-pinterest fa-2x"></i></a>
+		<a href="/#" class="fs-item"><i class="fa fa-instagram fa-2x"></i></a>
+		<a href="/#" class="fs-item"><i class="fa fa-google-plus fa-2x"></i></a>
 	</div>
-	<div class="col-md-4">
-		<h4>Connect with Us</h4>
-		<div class="social-connect">
-			<a href="#" class="su fa fa-facebook-square fa-2x"></a>
-			<a href="#" class="su fa fa-google-plus-square fa-2x"></a>
-			<a href="#" class="su fa fa-twitter-square fa-2x"></a>
-		</div>
-	</div>
-</div>
-</div>
-<div class="footer-strip">Copyright ThinkMerit  2015</div>
+	<span class="copyright">&copy; Lookplex.com</span>
+</footer>
 </body>
+<script type="text/javascript" src="js/lib/jquery.min.js"></script>
+<script type="text/javascript" src="js/lib/angular.min.js"></script>
+<script type="text/javascript" src="js/lib/angular.route.min.js"></script>
+<script type="text/javascript" src="js/lib/underscore.js"></script>
+<script type="text/javascript" src="js/app/app.js"></script>
+<script type="text/javascript" src="js/controller/controller.js"></script>
 </html>

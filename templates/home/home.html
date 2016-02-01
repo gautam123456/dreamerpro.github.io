@@ -1,0 +1,81 @@
+<div ng-controller="HomeController as hc">
+	<div class="jumbotron">
+		<h2>Let's Look New Today</h2>
+		<span class="cats">Salon.Spa.Gym.Makeup Artists.Slimming.Dieticians.Yoga.Nail Art.Tattoo.Piercing.Mehendi.</span>
+		<div class="col-md-10 col-md-offset-1 mt-50">
+			<div class="form-group" id="search-bar">
+				<button class="btn btn-red pull-right"><i class="fa fa-search "></i></button>
+				<input type="search" class="form-control" placeholder="Search grooming services near you">
+				<!-- Need to adjust text align on hover with angular-->
+			</div>
+		</div>
+	</div>
+	<section class="col-b">
+		<div class="header">
+			<h4>--Come One, Come All--</h4>
+		</div>
+		<div class="body">
+			Experience the craft of extraordinary expertise in beaty, wellness and fitness world
+		</div>
+	</section>
+	<section class="col-c scroller" >
+		<center><a class="image-container ad" style="background-image:url(images/photoclub1.jpg);"></a></center>
+	</section>
+
+	<section class="col-b">
+		<div class="header">
+			<h4>--Hand Picked for You--</h4>
+		</div>
+		<div class="body">
+			Experience the craft of extraordinary expertise in beaty, wellness and fitness world
+		</div>
+	</section>
+	<section class="col-c" >
+		<div class="image-container" style="background-image:url(images/photoclub1.jpg);background-position: -360px 0;">
+			<h4>Cut Above the Rest</h4>
+			<h3>Salon</h3>
+		</div>	
+	</section>
+	<section class="col-c" >
+		<div class="image-container" style="background-image:url(images/photoclub1.jpg);">
+			<h4>Time waits here</h4>
+			<h3>Spa</h3>
+		</div>	
+	</section>
+	<section class="col-c" >
+		<div class="image-container" style="background-image:url(images/photoclub1.jpg);background-position: -1429px 0;">
+			<h4>Shape up. Build up</h4>
+			<h3>Gym</h3>
+		</div>	
+	</section>
+	<section class="col-c" >
+		<div class="image-container" style="background-image:url(images/photoclub1.jpg);background-position: -1079px 0;">
+			<h4>The Eye Candy</h4>
+			<h3>Makeup Artist</h3>
+		</div>	
+	</section>
+	<section class="col-b">
+		<a class="btn btn-link" ng-if="!hc.sm_hp" ng-click="hc.togglemore(2)">See Less</a>
+		<a class="btn btn-link" ng-if="hc.sm_hp">See More</a>
+	</section>
+
+	<section class="col-b">
+		<div class="header">
+			<h4>--Popular in Town--</h4>
+		</div>
+		<div class="body">
+			A collection of establishments offering world class services in your neighbourhood
+		</div>
+	</section>
+
+	<section class="col-d" ng-repeat="popular in hc.popular" ng-hide="$index>2 && hc.sm_popular"><!-- sm_popular== showing all -->
+		<div class="image-container" style="background-image:url({{popular.background}});">
+			<h4 class="vc">{{popular.name}}</h4>			
+		</div>	
+	</section>
+	<section class="col-b">
+		<a class="btn btn-link" ng-if="!hc.sm_popular" ng-click="hc.togglemore(1)">See Less</a>
+		<a class="btn btn-link" ng-if="hc.sm_popular" ng-click="hc.togglemore(1)">See More</a>
+	</section>
+	
+</div>

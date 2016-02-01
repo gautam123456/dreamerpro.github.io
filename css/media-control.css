@@ -1,0 +1,6 @@
+@media(max-width: 768px){
+	/*Home content*/
+	#line>span{
+		font-size: 44% !important;
+	}
+}
