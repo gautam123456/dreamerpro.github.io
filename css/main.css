@@ -24,8 +24,8 @@ a,a:hover{
 }
 .jumbotron{
 	/*height: calc(100vh - 80px);*/
-	max-height: 388px;
-    min-height: 388px;
+	max-height: 488px;
+    min-height: 488px;
 	text-align: center;
 	/*font-style: bold;*/
 	background-color: rgba(0,0,0,0.4);
