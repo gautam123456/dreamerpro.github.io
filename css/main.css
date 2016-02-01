@@ -24,8 +24,8 @@ a,a:hover{
 }
 .jumbotron{
 	/*height: calc(100vh - 80px);*/
-	max-height: 488px;
-    min-height: 488px;
+	max-height: 468px;
+    min-height: 468px;
 	text-align: center;
 	/*font-style: bold;*/
 	background-color: rgba(0,0,0,0.4);
@@ -106,6 +106,7 @@ a,a:hover{
 .col-d>.image-container{
 	background-size:cover
 }
+
 .col-c.scroller{
 	text-align: left;
 	vertical-align:top;
@@ -127,6 +128,7 @@ a,a:hover{
 }
 .image-container>h4.vc{
 	padding-top: 100px !important;
+	font-weight: 600;
 }
 .image-container>h3{
 	padding-top: 30px;
