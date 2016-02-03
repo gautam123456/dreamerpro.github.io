@@ -1,52 +1,9 @@
-angular.module('cultstage')
-.directive('topNav', function(){
+angular.module('lookplex')
+.directive('gallery', function(){
 	return {
 		restrict:'E',
-		templateUrl:'templates/directives/top-nav.html'
-	}
-})
-.directive('jobSideMenu', function(){
-	return {
-		restrict:'E',
-		templateUrl:'templates/directives/job-side-menu.html'
-	}
-})
-.directive('messageSideMenu', function(){
-	return {
-		restrict:'E',
-		templateUrl:'templates/directives/message-side-menu.html'
-	}
-})
-.directive('profileSideMenu', function(){
-	return {
-		restrict:'E',
-		templateUrl:'templates/directives/profile-side-menu.html'
-	}
-})
-.directive('eventAttendee', function(){
-	return {
-		restrict:'E',
-		templateUrl:'templates/directives/event-attendee.html'
+		templateUrl:'templates/gallery'
 	}
 })
 
-.directive('profileCover', function(){
-	return {
-		restrict:'E',
-		templateUrl:'templates/directives/profile-cover.html'
-	}
-})
-.directive('eventCover', function(){
-	return {
-		restrict:'E',
-		templateUrl:'templates/directives/event-cover.html'
-	}
-})
-
-.directive('signModal', function(){
-	return {
-		restrict:'E',
-		templateUrl:'templates/directives/sign.html'
-	}
-})
 

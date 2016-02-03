@@ -9,19 +9,59 @@
 </head>
 
 <body>
+
+<div class="modal modal-fullscreen fade" id="modal-search" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content" style="margin-right: -16px;">
+      <div class="modal-header grey-bg">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <center><h4 class="modal-title" id="myModalLabel">Search</h4></center>
+      </div>
+      <div class="modal-body">
+
+			<div class="form-group smfg">
+				<i class="fa fa-map-marker pull-left"></i>
+				<input class="form-control" type="text" placeholder="Search by city, landmark or colony"></input>
+			</div>
+			<div class="form-group smfg">
+				<!-- <label>Select your service</label> -->
+				<input class="form-control" type="text" ng-model="query" placeholder="Select your service"></input>
+			</div>
+			<button class="btn btn-blue form-control" ng-click="search()" data-dismiss="modal"><b>Search</b></button>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
 <header>
 	<span class="pull-left navbar-toggle">
 		<i class="fa fa-bars"></i>
 	</span>
-	<div class="clearfix logo">
-		<a href="/#/">LookPlex<!-- <img src="images/logonew.png"> --></a>
+	<div ng-show="islanding">
+		<div class="clearfix logo">
+			<a href="/#/"><img src="images/logo_mobile.png"></a>
+		</div>
 	</div>
+	<div ng-show="!islanding" class="clearfix">
+		<div class="btn btn-round pull-right" ng-show="showFilter" ng-click="showFilters=!showFilters"><i class="fa fa-filter"></i></div>
+		<div class="block">
+			<div class="form-group" id="search-bar">
+			<button class="btn btn-red pull-right" ><i class="fa fa-search "></i></button>
+			<input type="search" data-toggle="modal" data-target="#modal-search" class="form-control" placeholder="Search grooming services near you">
+			<!-- Need to adjust text align on hover with angular-->
+			</div>
+		</div>
+		
+	</div>
+	
 </header>
-<div class="content" ng-view>
+<div class="content clearfix" ng-view>
 	
 </div>
 
-<footer>
+<footer ng-show="!showFilters">
 	<div>
 		<ul class="footer-list">
 			<li><a href="/#/" >About us</a> </li>
@@ -45,7 +85,11 @@
 <script type="text/javascript" src="js/lib/jquery.min.js"></script>
 <script type="text/javascript" src="js/lib/angular.min.js"></script>
 <script type="text/javascript" src="js/lib/angular.route.min.js"></script>
+<script type="text/javascript" src="js/lib/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/lib/underscore.js"></script>
 <script type="text/javascript" src="js/app/app.js"></script>
 <script type="text/javascript" src="js/controller/controller.js"></script>
+<script type="text/javascript" src="js/directive/directive.js"></script>
+<script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+
 </html>

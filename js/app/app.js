@@ -2,8 +2,10 @@ angular.module('lookplex',['ngRoute'])
 .config(['$routeProvider', function($routeProvider) {
 	$tu="templates/";
 	$routeProvider
-	.when("/", { templateUrl:$tu+'/home/home.html' })
-	.when("/unsupportedscreen", { templateUrl:$tu+'/unsupportedscreen/index.html' })
+	.when("/", { templateUrl:$tu+'/home' })
+	.when("/search/:query", { templateUrl:$tu+'/search-result' })
+	.when("/show/:guid", { templateUrl:$tu+'/show' })
+	.when("/unsupportedscreen", { templateUrl:$tu+'/unsupportedscreen/' })
 	.otherwise({
 		redirectTo:"/"
 	})
@@ -25,6 +27,10 @@ angular.module('lookplex',['ngRoute'])
         	$rootScope.islanding=true;
         }
         else{
+        	console.log(url);
+        	if(url.indexOf("/search")>-1){$rootScope.showFilter=true;}
+        	else{$rootScope.showFilter=false;}
+
         	$rootScope.islanding=false;
         	
         }
@@ -32,6 +38,11 @@ angular.module('lookplex',['ngRoute'])
         
 
 	});
+
+	$rootScope.search = function() {
+            alert('This is just test. After only data input it will proceed further.');
+            $location.path('/search/test');
+    };
 
 
 })

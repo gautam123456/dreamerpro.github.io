@@ -1,0 +1,173 @@
+
+
+<div ng-controller="SearchResultCtrl as src" >
+
+
+
+
+<div class="filters col-md-12" ng-show="showFilters">
+<div class="header grey-bg row col-md-12">
+<span class="text-danger pull-right mt-13">Reset filters <i class="fa fa-times-circle-o "></i> </span>
+<h3 >Filters</h3>
+</div>
+
+<div class="filter-item">
+	<h4>Sort by</h4>
+	<div class="form-group">
+	<label><input type="checkbox"> Popularity - High to Low</label>
+	</div>
+
+	<div class="form-group">
+	<label><input type="checkbox"> Rating - High to Low</label>
+	</div>
+
+</div>
+<hr>
+<div class="filter-item">
+
+	<h4>Brands</h4>
+	<div class="form-group">
+	<label><input type="checkbox"> Affinity</label>
+	</div>
+
+	<div class="form-group">
+	<label><input type="checkbox"> Mosoon & Spa</label>
+	</div>
+
+</div>
+
+<hr>
+<div class="filter-item">
+
+	<h4>Gender</h4>
+	<div class="form-group">
+	<label><input type="checkbox"> Male</label>
+	</div>
+
+	<div class="form-group">
+	<label><input type="checkbox"> Female</label>
+	</div>
+	<div class="form-group">
+	<label><input type="checkbox"> Unisex</label>
+	</div>
+</div>
+<hr>
+<div class="filter-item">
+
+	<h4>More Filters</h4>
+	<div class="form-group">
+	<label><input type="checkbox"> Open Today</label>
+	</div>
+
+	<div class="form-group">
+	<label><input type="checkbox"> Doorstep Services</label>
+	</div>
+	<div class="form-group">
+	<label><input type="checkbox"> Credit/Debit Card</label>
+	</div>
+	<div class="form-group">
+	<label><input type="checkbox"> Air conditioned</label>
+	</div>
+	<div class="form-group">
+	<label><input type="checkbox"> Wi-fi enabled</label>
+	</div>
+	<div class="form-group">
+	<label><input type="checkbox"> Parking available</label>
+	</div>
+	<div class="form-group">
+	<br>
+	</div>
+</div>
+<hr>
+<div id="filter-footer" class="col-xs-12 row">
+	<div class="btn btn-white" ng-click="src.toggleSF()">Cancel</div>
+	<div class="btn btn-red-wb1 pull-right">Apply Filters</div>
+</div>
+
+
+</div>
+
+<!-- Filter end -->
+
+
+<div ng-show="!showFilters"><!-- ENCLOSER -->
+
+	<div class="result-page-header col-md-12">
+		<h4>{{src.query}} in {{src.place}}</h4>
+
+		<ol class="breadcrumb row">
+		  <li><a href="#">Home</a></li>
+		  <li><a href="#">{{src.place}}</a></li>
+		  <li class="active">{{src.query}}</li>
+		</ol>
+
+		<nav class="row">
+		  <ul class="categories" ng-class="{pl8:!src.cs.left}">
+		    <li class='col-md-1 al' ng-show="src.cs.left" ng-click="src.sl()">
+		      <a aria-label="Previous">
+		        <span aria-hidden="true">&laquo;</span>
+		      </a>
+		    </li>
+		    <li  ng-repeat="cat in src.categories"><a href="">{{cat.name}}</a></li>
+		    <li class='col-md-1 ar' ng-show="src.cs.right" ng-click="src.sr()">
+		      <a class="pull-right" aria-label="Next">
+		        <span aria-hidden="true">&raquo;</span>
+		      </a>
+		    </li>
+		  </ul>
+		</nav>
+
+	</div>
+	<br>
+	<div class="result-list">
+	<div class="result-list-item"><!-- center; background-repeat:no-repeat; background-size: contain; -->
+		<div class="item" style="background-image: url(https://pt.lookplex.com/WFFJMU9NHR67ARQZEHV4MKLIAT_cover)">
+			<div class="item-infos">
+				<a href="#/show/xyz" class="item-name"><h4>Affinity Salon</h4></a>
+				<p class="item-cat">Spa | Salon | Makeup Artist</p>
+				<p class="item-address">93, Inner Circle, Cannaught Place</p>
+				<p class="item-aminities">
+					<i class="fa fa-male" data-toggle="tooltip" data-placement="left" title="" data-original-title="Male"></i>
+					<i class="fa fa-female" data-toggle="tooltip" data-placement="left" title="" data-original-title="Female"></i>
+				</p>
+			</div>
+			
+		</div>
+		<div class="item-sub-menu">
+			<a class="ism"><i class="fa fa-phone"></i></a>
+			<a class="ism">Rate Card </a>
+			<a class="ism">Photos </a>
+			<a class="ism">Reviews</a>
+			<a class="ism">Trust </a>
+		</div>
+	</div>
+
+	<div class="result-list-item"><!-- center; background-repeat:no-repeat; background-size: contain; -->
+		<div class="item" style="background-image:url(https://pt.lookplex.com/FEZ3117FD59XRRVK5KNGCQ2TDU_cover)">
+			<div class="item-infos">
+				<h4>Sigma Salon</h4>
+				<p class="item-cat">Spa | Salon | Makeup Artist</p>
+				<p class="item-address">93, Inner Circle, Cannaught Place</p>
+				<p class="aminities">
+					<i class="fa fa-male" data-toggle="tooltip" data-placement="left" title="" data-original-title="Male"></i>
+					<i class="fa fa-female" data-toggle="tooltip" data-placement="left" title="" data-original-title="Female"></i>
+				</p>
+			</div>
+			
+		</div>
+		<div class="item-sub-menu">
+			<a class="ism"><i class="fa fa-phone"></i></a>
+			<a class="ism">Rate Card </a>
+			<a class="ism">Photos </a>
+			<a class="ism">Reviews</a>
+			<a class="ism">Trust </a>
+		</div>
+	</div>
+	</div>
+
+
+
+</div><!-- END ENCLOSER -->
+
+
+</div>
