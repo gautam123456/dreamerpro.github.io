@@ -173,15 +173,15 @@ a,a:hover{
 	font-size: large;
 }
 .btn-round{
-    border-radius: 18.5px;
+    border-radius: 12.5px;
     border: 1px solid #ddd;
-    width: 30px;
-    height: 30px;
-	margin: 10px 15px;
+    width: 25px;
+    height: 25px;
+    margin: 10px 10px;
 }
 .btn-round i{
-	line-height: 18px;
-    margin-left: -3px;
+    line-height: 15px;
+    margin-left: -5px;
 }
 
 
