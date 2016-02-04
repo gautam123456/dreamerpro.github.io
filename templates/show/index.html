@@ -239,25 +239,32 @@
 		<h4>Opening Hours</h4>
 		
 		<p  ng-show="sc.getToday()==1 || sc.showall">
-			<span class="col-xs-2">Monday </span> {{sc.storeDetails.mondayTiming |time_filter:sc.storeDetails.mondayTiming}}
+			<span class="col-xs-3">Monday </span> 
+			<span class="col-xs-3">{{sc.storeDetails.mondayTiming |time_filter:sc.storeDetails.mondayTiming}}
 		</p>
 		<p ng-show="sc.getToday()==2 || sc.showall">
-			<span class="col-xs-2">Tuesday</span> {{sc.storeDetails.tuesdayTiming |time_filter:sc.storeDetails.tuesdayTiming}}
+			<span class="col-xs-3">Tuesday</span> 
+			<span class="col-xs-3">{{sc.storeDetails.tuesdayTiming |time_filter:sc.storeDetails.tuesdayTiming}}</span> 
 		</p>
 		<p ng-show="sc.getToday()==3 || sc.showall">
-			<span class="col-xs-2">Wednesday</span> {{sc.storeDetails.wednesdayTiming |time_filter:sc.storeDetails.wednesdayTiming}}
+			<span class="col-xs-3">Wednesday</span> 
+			<span class="col-xs-3">{{sc.storeDetails.wednesdayTiming |time_filter:sc.storeDetails.wednesdayTiming}}</span> 
 		</p>
 		<p ng-show="sc.getToday()==4 || sc.showall">
-			<span class="col-xs-2">Thursday</span> {{sc.storeDetails.thursdayTiming |time_filter:sc.storeDetails.thursdayTiming}}
+			<span class="col-xs-3">Thursday</span> 
+			<span class="col-xs-3">{{sc.storeDetails.thursdayTiming |time_filter:sc.storeDetails.thursdayTiming}}</span> 
 		</p>
 		<p ng-show="sc.getToday()==5 || sc.showall">
-			<span class="col-xs-2">Friday</span> {{sc.storeDetails.fridayTiming |time_filter:sc.storeDetails.fridayTiming}}
+			<span class="col-xs-3">Friday</span> 
+			<span class="col-xs-3">{{sc.storeDetails.fridayTiming |time_filter:sc.storeDetails.fridayTiming}}</span> 
 		</p>
 		<p ng-show="sc.getToday()==6 || sc.showall">
-			<span class="col-xs-2">Saturday</span> {{sc.storeDetails.saturdayTiming |time_filter:sc.storeDetails.saturdayTiming}}
+			<span class="col-xs-3">Saturday</span> 
+			<span class="col-xs-3">{{sc.storeDetails.saturdayTiming |time_filter:sc.storeDetails.saturdayTiming}}</span> 
 		</p>
 		<p ng-show="sc.getToday()==7 || sc.showall">
-			<span class="col-xs-2">Sunday</span> {{sc.storeDetails.sundayTiming |time_filter:sc.storeDetails.sundayTiming}}
+			<span class="col-xs-3">Sunday</span> 
+			<span class="col-xs-3">{{sc.storeDetails.sundayTiming |time_filter:sc.storeDetails.sundayTiming}}</span> 
 		</p>
 		
 		<!-- <p>12 Noon to 11PM</p>
