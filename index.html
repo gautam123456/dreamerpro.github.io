@@ -21,13 +21,19 @@
 
 			<div class="form-group smfg">
 				<i class="fa fa-map-marker pull-left"></i>
-				<input class="form-control" type="text" placeholder="Search by city, landmark or colony"></input>
+				<input class="form-control" type="text" ng-model="location.query.location" placeholder="Search by city, landmark or colony"></input>
+			</div>
+			<div class="list-group" ng-show="location.locationList.length">
+				<a class="list-group-item" ng-repeat="x in location.locationList" ng-click="selectBlock(x.id,x.guid, x.locationName)"><i class="fa fa-map-marker pull-left"></i> {{x.locationName}}</a>
 			</div>
 			<div class="form-group smfg">
-				<!-- <label>Select your service</label> -->
-				<input class="form-control" type="text" ng-model="query" placeholder="Select your service"></input>
+				<input class="form-control" type="text" ng-model="cat" placeholder="Select your service"  ng-blur="category.show=false"   ng-focus="category.show=true" ></input>
 			</div>
-			<button class="btn btn-blue form-control" ng-click="search()" data-dismiss="modal"><b>Search</b></button>
+			<div class="list-group" ng-show="category.show">
+				<a class="list-group-item" ng-repeat="x in categoriesList|filter:cat" ng-mousedown="selectCategory(x.id,x.name)"><!-- <i class="fa fa-map-marker pull-left"></i> --> {{x.name}}</a>
+			</div>
+
+			<button class="btn btn-blue form-control" ng-click="search()"><b>Search</b></button>
 
 
       </div>
@@ -90,6 +96,7 @@
 <script type="text/javascript" src="js/app/app.js"></script>
 <script type="text/javascript" src="js/controller/controller.js"></script>
 <script type="text/javascript" src="js/directive/directive.js"></script>
+<script type="text/javascript" src="js/filters/filters.js"></script>
 <script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
 
 </html>

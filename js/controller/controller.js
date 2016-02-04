@@ -1,12 +1,101 @@
 angular.module('lookplex')
-.controller('ShowController', function(){
+.controller('ShowController', function($routeParams,$location, $http){
+
 	var that=this;
 	//http get data
-	that.data={
-		name:'Affinity',
-		aminities:['a','b']
+	that.query=$routeParams;
+	console.log(that.query);
+	that.storeDetails=null;
+	that.storeRateCard=[];
+
+	//GET Store details
+	$http({
+    	method: 'POST',
+		url: 'https://storeapi.lookplex.com/ws/masnepservice/getstoredetails',
+		data: $.param($routeParams),//serialize
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded'//'text/plain' //
+		}
+	})
+	.success(function(data){
+		console.log(data)
+		that.storeDetails=data;
+	})
+	.error(function(data){
+		console.log(data)
+	});
+
+	//GET RATE CARD
+	$http({
+    	method: 'POST',
+		url: 'https://storeapi.lookplex.com/ws/masnepservice/getratecard',
+		data: $.param({id:$routeParams.storeID,gid:$routeParams.guid}),//serialize
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded' // 'text/plain' //
+		}
+	})
+	.success(function(data){
+		console.log(data);
+		that.storeRateCard=data;
+		
+		
+	})
+	.error(function(data){
+		console.log(data)
+	});
+
+	//get now
+	this.getToday=function(){
+		var date = new Date(_.now());
+		//var month = date.getMonth();
+		var day=date.getDay();
+		return day;
 	}
 
+//Photoswipe
+		this.openPhotoSwipe = function(index) {
+			var that=this;
+		    var pswpElement = document.querySelectorAll('.pswp')[0];
+		  /*  if(type==1){//ratecard
+
+		    }*/
+		    // build items array
+		   /* var items = [
+		        {
+		            src: 'https://farm2.staticflickr.com/1043/5186867718_06b2e9e551_b.jpg',
+		            w: 964,
+		            h: 602
+		        },
+		        {
+		            src: 'https://farm7.staticflickr.com/6175/6176698785_7dee72237e_b.jpg',
+		            w: 1024,
+		            h: 683
+		        }
+		    ];*/
+		    var items = [ ];
+		    for (var i = 0; i < that.storeRateCard.length; i++) {
+		    	//console.log(that.storeRateCard[i]);
+				items.push({ src:that.storeRateCard[i].photoUrl+"_medium",w:500,h:700});	
+			};
+			console.log(items, that.storeRateCard[0].photoUrl);
+		    
+		    // define options (if needed)
+		    var options = {
+		             // history & focus options are disabled on CodePen        
+		        history: true,
+		        focus: true,
+
+		        index: 2,
+
+		        showAnimationDuration: 1,
+		        hideAnimationDuration: 0
+		        
+		    };
+		    options.index=index;
+		    //console.log(options);
+		    var gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
+		    gallery.init();
+		};
 
 
 })
@@ -94,40 +183,59 @@ angular.module('lookplex')
 
 
 
-.controller('SearchResultCtrl', function($routeParams, $scope, $rootScope){
+.controller('SearchResultCtrl', function($routeParams, $scope, $rootScope, $http, $location){
 	var that=this;
-	this.query=$routeParams.query;
-	this.place="Malviya Nagar";
-	
+	this.query=$routeParams;
+	this.resultList=null;
 	//this.showFilters=$rootScope.showFilters;
 	
+	//console.log($routeParams);
+	$http({
+	    	method: 'POST',
+			url: 'https://storeapi.lookplex.com/ws/masnepservice/getstores',
+			data: $.param($routeParams),//serialize
+			headers: {
+				'Content-Type': 'text/plain' //'application/x-www-form-urlencoded'//
+			}
+			})
+	    	.success(function(data){
+	    		//$rootScope.location.locationList=data;
+	    		console.log(data);
+	    		that.resultList=data.storeList;
+	    	})
+	    	.error(function(error){
+		    	console.log(error);
+		    });
+
+	this.categories=$rootScope.categoriesList;
+	if(this.categories[0].name!=='All'){// add all if not there
+		this.categories.unshift({name:'All',id:0});	
+	}
 	
-	
-	this.categories=[
-		{name:'All',id:0},
-		{name:'Salon',id:1},
-		{name:'Spa',id:2},
-		{name:'Gym',id:3},
-		{name:'Slimming & Cosmetology',id:4},
-		{name:'Makeup Artists',id:5},
-		{name:'Dietitian and Nutritionists',id:6},
-		{name:'Tatto & Piercing',id:7},
-		{name:'Yoga & Aerobics',id:8},
-		{name:'Nail Art',id:9},
-		{name:'Mehendi',id:10},
-	];
+
+
+	this.isCatActive=function(id){//check if category active
+		return id == $routeParams.catid;
+	}
+	this.createLink=function(id){
+		if(id==0){alert('the endpoint is unknown'); return false;}
+			$location.path('/search/id/'
+            	+$routeParams.blockID+"/guid/"
+            	+$routeParams.blockguid+"/category/"
+            	+id+"/r/"
+            	+1+"/"
+            	+10+"/"
+            	+$routeParams.location
+            	);
+	}
+
 	this.cs={left:false,right:true};//show next or previous
 	
 	this.toggleSF=function(){
-		//console.log($rootScope.showFilters);
-		//that.showFilters=!that.showFilters;
 		$rootScope.showFilters=!$rootScope.showFilters;
 	}
 	
-	/*$scope.$watch('that.cs.left',function(newval,oldval){
-		console.log(newval, oldval);
-	});
-	*/this.sr=function(){//Scroll Right
+	this.sr=function(){//Scroll Right
 		//console.log($(".categories").first().width());
 		if($(".categories").first().scrollLeft()===0){that.cs.left=false; }
 		$(".categories").first().animate({scrollLeft:$(".categories").first().scrollLeft()+$(".categories").first().width()});

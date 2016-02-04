@@ -1,93 +1,43 @@
-angular.module('cultstage')
-.filter('object_filter', function() {
+angular.module('lookplex')
+.filter('cat_filter', function() {
 	//var option={name:'D\'',types:[],locations:[]};
 	
 	return function(objects,option){
 		var out=[];
 		var z=true;
-/*
-TRUE==ADD
-IF PEOPLE NAME CONTAINS QUERY => TRUE
-IF AT LEAST 1 TYPE EXIST IN PEOPLE.TYPE or FILED => TRUE
-*/
 
-		for (var i = objects.length - 1; i >= 0; i--) {
-			var object=objects[i];
-			
-			if(option.name==undefined || option.name==""){/*DO NOTHING*/}
-			else{if(object.name.indexOf(option.name)<0) continue;}
+		if(objects==undefined) {return objects;}
+		
+		out=objects.split(',');
+		
+		for (var i = out.length - 1; i >= 0; i--) {
+			if(out[i]==="sp"){out[i]="Spa";}
+			else if(out[i]==="sp"){out[i]="Spa";}
+			else if(out[i]==="sa"){out[i]="Salon";}
+			else if(out[i]==="gy"){out[i]="Gym";}
+			else if(out[i]==="bp"){out[i]="Beauty Parlour";}
+			else if(out[i]==="pbm"){out[i]="Party & Bridal Makeup";}//Dietitians & Nutritionists
+			else if(out[i]==="ya"){out[i]="Yoga & Aerobics";}
+			else if(out[i]==="na"){out[i]="Nail Art";}
+			else if(out[i]==="md"){out[i]="Mehendi";}
+		};
+		
+		return out.join(" | ");
+	}
 
-			if(option.types==undefined){/*DO NOTHING*/}
-			else{
-				if(option.types.length==0){}
-				else{
-					
-					for (var j = 0; j <object.types.length; j++) {
-						for (var k = 0; k <option.types.length; k++) {
-							if(object.types[j].indexOf(option.types[k])>-1){ j=object.types.length; break;	}
-							else if(j==object.types.length-1 && k==option.types.length-1){ z=false;}
-						}		
-					}
-				}
-			}
-			if(z){
-				if(option.locations==undefined){/*DO NOTHING*/}
-				else{
-					if(option.locations.length==0){}
-					else{
-						for (var j = 0; j <object.locations.length; j++) {
-							for (var k = 0; k <option.locations.length; k++) {
-								if(object.locations[j].indexOf(option.locations[k])>-1){ j=object.locations.length; break;	}
-								else if(j==object.locations.length-1 && k==option.locations.length-1){ z=false;}
-							}		
-						}
-					}
-				}	
-			}
+})//time_filter
+.filter('time_filter', function() {
+	//var option={name:'D\'',types:[],locations:[]};
+	
+	return function(objects,option){
+		var out=[];
+		if(objects==undefined) {return objects;}
+		if(objects=="OFF-"){return "OFF";}
 
-			if(z){
-				if(option.languages==undefined){/*DO NOTHING*/}
-				else{
-					if(option.languages.length==0){}
-					else{
-						for (var j = 0; j <object.languages.length; j++) {
-							for (var k = 0; k <option.languages.length; k++) {
-								if(object.languages[j].indexOf(option.languages[k])>-1){ j=object.languages.length; break;	}
-								else if(j==object.languages.length-1 && k==option.languages.length-1){ z=false;}
-							}		
-						}
-					}
-				}	
-			}
-			
-
-			if(z){ out.push(object); }
-			z=true;
-		}
-			
-		return out;
+		out=objects.split('');
+		out.splice(2,0,":");
+		out.splice(9,0,":");
+		return out.join("");
 	}
 
 })
-/*if(option.name!=undefined || option.name!=""){
-				console.log("index is "+element.name.indexOf(option.name))	
-				if(element.name.indexOf(option.name)<-1){console.log("thats it");z=false;}
-				
-			}
-			if(z){
-				console.log("helo 2");
-				if(option.types==undefined){}
-				else if(option.types!=undefined || option.types.length>0){
-					for (var i = element.types.length - 1; i >= 0; i--) {
-						
-						for (var j = option.types.length - 1; j >= 0; j--) {
-							if(element.types[i].indexOf(option.types[j])>-1){
-								a=1; break;
-							}
-							if(i==0 && j==0){z=false;}
-						};
-						if(a==1){break;}
-					};
-				}
-			}
-			z=true;*/

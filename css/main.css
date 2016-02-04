@@ -437,8 +437,13 @@ footer{
 	display: block;
 }
 .categories li.active a{
-	text-decoration: underline;
+	border-bottom: 1px solid #000;
+   /* border-right: none;
+    border-left: none;*/
+    /*text-decoration: underline !important;*/
+    font-weight: bold;
 }
+
 .categories::-webkit-scrollbar {
 	width: 2px;
 	height: 1px;
@@ -483,6 +488,11 @@ footer{
 }
 .item.s{
 	height: 190px;
+	border-radius: 4px 4px 0 0;
+    background-size: cover !Important;
+    background-color: rgba(0,0,0,0.4);
+    background-blend-mode: darken;
+    background-position: center;
 }
 .item .item-infos{
 	display: inline-block;

@@ -3,20 +3,21 @@ angular.module('lookplex',['ngRoute'])
 	$tu="templates/";
 	$routeProvider
 	.when("/", { templateUrl:$tu+'/home' })
-	.when("/search/:query", { templateUrl:$tu+'/search-result' })
-	.when("/show/:guid", { templateUrl:$tu+'/show' })
+	.when("/search/id/:blockID/guid/:blockguid/category/:catid/r/:startindex/:endIndex/:location", { templateUrl:$tu+'/search-result' })
+	.when("/show/profile/:storename/:storeID/:guid", { templateUrl:$tu+'/show' })
 	.when("/unsupportedscreen", { templateUrl:$tu+'/unsupportedscreen/' })
-	.otherwise({
+	/*.otherwise({
 		redirectTo:"/"
-	})
+	})*/
 	;
 }])
 
-.run(function($rootScope, $location){
+.run(function($rootScope, $location, $http){
+	$rootScope.env="production";
 
 	$rootScope.$on('$locationChangeSuccess', function(event){
 		//console.log($(window).width() );
-		if ($(window).width() > 720) {
+		if ($rootScope.env==='production' && $(window).width() > 720) {
 		   //alert('Less than 960');
 		   $location.path('/unsupportedscreen');
 		}
@@ -27,7 +28,7 @@ angular.module('lookplex',['ngRoute'])
         	$rootScope.islanding=true;
         }
         else{
-        	console.log(url);
+
         	if(url.indexOf("/search")>-1){$rootScope.showFilter=true;}
         	else{$rootScope.showFilter=false;}
 
@@ -39,10 +40,136 @@ angular.module('lookplex',['ngRoute'])
 
 	});
 
+
+/*******************8SEARCHING ******************************/
+
+	$rootScope.categoriesList=[
+		{id:1, name:'Spa'},
+		{id:2, name:'Salon'},
+		{id:3, name:'Gym'},
+		{id:8, name:'MakeUp Artists'},
+		{id:6, name:'Slimming and Cosmetology'},
+		{id:9, name:'Dietitians & Nutritionists'},
+		{id:14, name:'Tatto & Piercing'},
+		{id:10, name:'Yoga & Aerobics'},
+		{id:11, name:'Nail Art'},
+		{id:13, name:'Mehendi'}
+	]
+	$rootScope.getCategory=function(id){
+		var out=null;
+		angular.forEach($rootScope.categoriesList,function(val, key){
+			if(val.id==id){ out=val; return;}
+
+		})
+		return out;
+	}
+	$rootScope.location={//location search
+		query:{location:''},
+		locationList:[]
+	}
+	$rootScope.stores={
+		query:{// store search based on blockid & guid
+			//no aminities or brandname
+			blockID:'',
+			blockguid:'',
+			catid:'',
+			startindex:1,
+			endIndex:10,
+			sortby:null
+		},
+		filteredQuery:{
+			blockID:'',
+			blockguid:'',
+			catid:'',
+			startindex:1,
+			endIndex:10,
+			sortby:null,
+			aminities:null,
+			brandname:null
+		},
+		storeDetails:{ // store details based on storeid & guid
+			storeID:'',
+			guid:''
+		}
+	}
+	
+	$rootScope.selectBlock = function(id, guid, name) { //set block id n guid on click
+		$rootScope.stores.query.blockID=id;
+		$rootScope.stores.query.blockguid=guid;
+		$rootScope.stores.filteredQuery.blockID=id;	
+		$rootScope.stores.filteredQuery.blockguid=guid;
+
+		$rootScope.location.query.location=name;
+	}
+	$rootScope.selectCategory=function(id, name){
+		//console.log(id, name);
+		$rootScope.cat=name;
+		$rootScope.stores.query.catid=id;
+		$rootScope.stores.filteredQuery.catid=id;
+	}
+
 	$rootScope.search = function() {
-            alert('This is just test. After only data input it will proceed further.');
-            $location.path('/search/test');
-    };
+     
+
+            $location.path('/search/id/'
+            	+$rootScope.stores.query.blockID+"/guid/"
+            	+$rootScope.stores.query.blockguid+"/category/"
+            	+$rootScope.stores.query.catid+"/r/"
+            	+$rootScope.stores.query.startindex+"/"
+            	+$rootScope.stores.query.endIndex+"/"
+            	+$rootScope.location.query.location
+            	);
+            $('#modal-search').modal('hide');
+
+            /**/
+    }	
+    $rootScope.getBlockList = function() {
+           //alert('This is just test. After only data input it will proceed further.');
+           // $location.path('/search/test');
+    }
+    $rootScope.$watch('location.query.location', function(newval, oldval){
+    
+    /*//change triggered by clicking the location list element*/
+    	var stop=false;
+    	angular.forEach($rootScope.location.locationList, function( value,key, obj){
+    		
+    		if(newval===value.locationName){
+    			console.log(value.locationName);	
+    			$rootScope.location.locationList=[];
+    			stop=true
+    			return false;		
+    		}
+    		
+    	});
+    	if(stop){return false;}
+	/*//end of change triggered by clicking the location list element*/
+
+
+    	if(newval!==undefined){
+    		if(newval!==oldval && newval.length>2){
+	    		$http({
+	    			method: 'POST',
+				    url: 'https://storeapi.lookplex.com/ws/masnepservice/getLocation',
+				    data: $.param($rootScope.location.query),//serialize
+				    headers: {
+				        'Content-Type': 'text/plain'//'application/x-www-form-urlencoded'
+				    }
+				})
+	    		.success(function(data){
+	    			$rootScope.location.locationList=data;
+	    		})
+	    		.
+		    	error(function(error){
+		    		alert(error);
+		    	});
+	    	}
+
+	    	if(newval.length<1){
+	    		$rootScope.location.locationList=[];
+	    	}
+    	}//!=undefined
+    	
+    })
 
 
 })

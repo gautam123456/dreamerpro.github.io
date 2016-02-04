@@ -154,14 +154,19 @@
 
 
 <div class="grey-bg">
-	<div class="item s" style="background-image: url(https://pt.lookplex.com/WFFJMU9NHR67ARQZEHV4MKLIAT_cover)">
+	<div class="item s" ng-style="{'background-image': 'url('+sc.storeDetails.coverUrl+')'}">
 		<div class="item-infos pd-5">
-			<span class="pull-right rating">4.2</span>
-			<a href="" class="item-name"><h4>Affinity Salon</h4></a>
-			<p class="item-cat">Spa | Salon | Makeup Artist</p>
+			<span class="pull-right rating" ng-if="sc.storeDetails.drating==''">{{sc.storeDetails.drating}}</span>
+			<span class="pull-right rating" ng-if="sc.storeDetails.drating!=''"> - </span>
+			<a href="" class="item-name"><h4>{{sc.storeDetails.storename}}</h4></a>
+			<p class="item-cat">{{sc.storeDetails.categoryList | cat_filter: sc.storeDetails.categoryList}}</p>
 			<p class="item-aminities">
-				<i class="fa fa-male" data-toggle="tooltip" data-placement="left" title="" data-original-title="Male"></i>
-				<i class="fa fa-female" data-toggle="tooltip" data-placement="left" title="" data-original-title="Female"></i>
+					<i ng-hide="sc.storeDetails.attributeList.indexOf('fm')<0" class="fa fa-male" data-toggle="tooltip" data-placement="left" title="" data-original-title="Male"></i>
+					<i ng-hide="sc.storeDetails.attributeList.indexOf('fw')<0" class="fa fa-female" data-toggle="tooltip" data-placement="left" title="" data-original-title="Female"></i>
+					<i ng-hide="sc.storeDetails.attributeList.indexOf('ac')<0" class="fa fa-asterisk" data-toggle="tooltip" data-placement="left" title="" data-original-title="AC"></i>
+					<i ng-hide="sc.storeDetails.attributeList.indexOf('pa')<0" class="fa fa-car" data-toggle="tooltip" data-placement="left" title="" data-original-title="Car Parking"></i>
+					<i ng-hide="sc.storeDetails.attributeList.indexOf('wi')<0" class="fa fa-wifi" data-toggle="tooltip" data-placement="left" title="" data-original-title="Wifi"></i>
+					<i ng-hide="sc.storeDetails.attributeList.indexOf('ca')<0" class="fa fa-credit-card" data-toggle="tooltip" data-placement="left" title="" data-original-title="Credit/Debit Card"></i>
 			</p>
 			<div class="sub-in-item">
 				<div class="">
@@ -183,7 +188,7 @@
 	</div><!-- item end -->
 	<div class="item-address col-md-12 panel panel-default ">
 		<h4>Address</h4>
-		<p>Something something</p>
+		<p>{{sc.address}}</p>
 		<div class="map" id="googleMap">
 			load map here
 		</div>
@@ -209,12 +214,12 @@
 		<h4>Rate Card</h4>
 		<div class="photos clearfix">
 			
-			<div class="col-xs-2" onclick="openPhotoSwipe(0)">
-				<div style="background-image:url(https://pt.lookplex.com/5Y1XSRDPMMZKQ573191F905C9B_small)"></div>
+			<div class="col-xs-2" ng-click="sc.openPhotoSwipe(0)" ng-repeat="rc in sc.storeRateCard">
+				<div ng-style="{'background-image':'url(https://pt.lookplex.com/{{rc.photoUrl}}_medium)'}"></div>
 			</div>
-			<div class="col-xs-2" onclick="openPhotoSwipe(1)">
+			<!-- <div class="col-xs-2" onclick="openPhotoSwipe(1)">
 				<div style="background-image:url(https://pt.lookplex.com/5Y1XSRDPMMZKQ573191F905C9B_small)"></div>
-			</div>
+			</div> -->
 		</div>
 		<br>
 		<h4>Photos</h4>
@@ -232,9 +237,32 @@
 		<a ng-if="!sc.showall" href="" class="text-danger pull-right" ng-click="sc.showall=!sc.showall">See More +</a>
 		<a ng-if="sc.showall" href="" class="text-danger pull-right" ng-click="sc.showall=!sc.showall" >See Less -</a>
 		<h4>Opening Hours</h4>
-		<p>12 Noon to 11PM</p>
+		
+		<p  ng-show="sc.getToday()==1 || sc.showall">
+			<span class="col-xs-2">Monday </span> {{sc.storeDetails.mondayTiming |time_filter:sc.storeDetails.mondayTiming}}
+		</p>
+		<p ng-show="sc.getToday()==2 || sc.showall">
+			<span class="col-xs-2">Tuesday</span> {{sc.storeDetails.tuesdayTiming |time_filter:sc.storeDetails.tuesdayTiming}}
+		</p>
+		<p ng-show="sc.getToday()==3 || sc.showall">
+			<span class="col-xs-2">Wednesday</span> {{sc.storeDetails.wednesdayTiming |time_filter:sc.storeDetails.wednesdayTiming}}
+		</p>
+		<p ng-show="sc.getToday()==4 || sc.showall">
+			<span class="col-xs-2">Thursday</span> {{sc.storeDetails.thursdayTiming |time_filter:sc.storeDetails.thursdayTiming}}
+		</p>
+		<p ng-show="sc.getToday()==5 || sc.showall">
+			<span class="col-xs-2">Friday</span> {{sc.storeDetails.fridayTiming |time_filter:sc.storeDetails.fridayTiming}}
+		</p>
+		<p ng-show="sc.getToday()==6 || sc.showall">
+			<span class="col-xs-2">Saturday</span> {{sc.storeDetails.saturdayTiming |time_filter:sc.storeDetails.saturdayTiming}}
+		</p>
+		<p ng-show="sc.getToday()==7 || sc.showall">
+			<span class="col-xs-2">Sunday</span> {{sc.storeDetails.sundayTiming |time_filter:sc.storeDetails.sundayTiming}}
+		</p>
+		
+		<!-- <p>12 Noon to 11PM</p>
 		<p ng-show="sc.showall">12 Noon to 11PM</p>
-		<p ng-show="sc.showall">12 Noon to 11PM</p>
+		<p ng-show="sc.showall">12 Noon to 11PM</p> -->
 		<br>
 		<h4>HIGHLIGHTS</h4>
 		<p><i class="fa fa-check-circle-o text-success"></i> Unisex</p>
@@ -306,41 +334,6 @@
 
 <script type="text/javascript">
 
-var openPhotoSwipe = function(index) {
-	var that=this;
-    var pswpElement = document.querySelectorAll('.pswp')[0];
-
-    // build items array
-    var items = [
-        {
-            src: 'https://farm2.staticflickr.com/1043/5186867718_06b2e9e551_b.jpg',
-            w: 964,
-            h: 602
-        },
-        {
-            src: 'https://farm7.staticflickr.com/6175/6176698785_7dee72237e_b.jpg',
-            w: 1024,
-            h: 683
-        }
-    ];
-    
-    // define options (if needed)
-    var options = {
-             // history & focus options are disabled on CodePen        
-        history: true,
-        focus: true,
-
-        index: 2,
-
-        showAnimationDuration: 1,
-        hideAnimationDuration: 0
-        
-    };
-    options.index=index;
-    //console.log(options);
-    var gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
-    gallery.init();
-};
 
 /*openPhotoSwipe();*/
 
