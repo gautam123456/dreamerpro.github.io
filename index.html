@@ -6,9 +6,10 @@
 	<link type="text/css" href="/css/bootstrap-theme.min.css" rel="stylesheet"></link>
 	<link type="text/css" href="/css/font-awesome.min.css" rel="stylesheet"></link>
 	<link type="text/css" href="/css/main.css" rel="stylesheet"></link>
+	<base href="/">
 </head>
 
-<body>
+<body ng-init="sidebar=false">
 
 <div class="modal modal-fullscreen fade" id="modal-search" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -41,8 +42,31 @@
   </div>
 </div>
 
+<div class="modal modal-fullscreen fade" id="modallogin" tabindex="-1" role="dialog" aria-hidden="true" class="loginmodal" ng-controller="LoginController as lc">
+	<div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+      	 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+      	 <!-- <center><h4 class="modal-title" >Login</h4></center> -->
+      </div>
+      <div class="modal-body">
+      	<div class="col-md-12" id="login_image"></div>
+      		<button class="btn btn-facebook form-control" ng-click="lc.facebooklogin()">
+      			<i class="fa fa-facebook" ></i> &nbsp; Log In with Facebook
+      		</button>
+      		<button class="btn btn-google form-control" ng-click="lc.googlelogin()">
+      			<i class="fa fa-google-plus" ></i> &nbsp; Log In with Google+
+      		</button>
+      </div>
+      <div class="modal-footer" style="text-align: left;">
+      	<small>By signing in, you agree to Lookplex's <a href=""><b>Terms of Service</b></a> and <a href=""><b>Privacy Policy</b></a></small>
+      </div>
+     </div>
+    </div>
+</div>
+
 <header>
-	<span class="pull-left navbar-toggle">
+	<span class="pull-left navbar-toggle" ng-click="sidebar=!sidebar"> 
 		<i class="fa fa-bars"></i>
 	</span>
 	<div ng-show="islanding">
@@ -53,17 +77,26 @@
 	<div ng-show="!islanding" class="clearfix">
 		<div class="btn btn-round pull-right" ng-show="showFilter" ng-click="showFilters=!showFilters"><i class="fa fa-filter"></i></div>
 		<div class="block">
-			<div class="form-group" id="search-bar">
+			<div class="form-group" id="search-bar"  data-toggle="modal"  data-target="#modal-search" >
 			<button class="btn btn-red pull-right" ><i class="fa fa-search "></i></button>
-			<input type="search" data-toggle="modal" data-target="#modal-search" class="form-control" placeholder="Search grooming services near you">
+			<input type="search" tabIndex="-1" class="form-control" placeholder="Search grooming services near you">
 			<!-- Need to adjust text align on hover with angular-->
 			</div>
-		</div>
-		
+		</div>	
 	</div>
 	
 </header>
-<div class="content clearfix" ng-view>
+<div class="clearfix sidebar" ng-class="{'out':!sidebar}">
+	<div class="list-group">
+		<a class="list-group-item" href="/" ng-click="sidebar=false">Home</a>
+		<a class="list-group-item" data-toggle="modal" data-target="#modallogin" ng-click="sidebar=false">Log In</a>
+		<a class="list-group-item" data-toggle="modal"  data-target="#modal-search" ng-click="sidebar=false">Search</a>
+		<a class="list-group-item">Discover</a>
+		<a class="list-group-item">How it Works</a>
+	</div>
+	
+</div>
+<div class="content clearfix" ng-hide="sidebar" ng-view>
 	
 </div>
 
@@ -97,6 +130,21 @@
 <script type="text/javascript" src="js/controller/controller.js"></script>
 <script type="text/javascript" src="js/directive/directive.js"></script>
 <script type="text/javascript" src="js/filters/filters.js"></script>
-<script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+
+<script src="bower_components/ng-facebook/ngFacebook.js"></script>
+<script src="bower_components/angular-google-plus/dist/angular-google-plus.min.js"></script>
+
+
+<!-- Core CSS file -->
+<link rel="stylesheet" href="/bower_components/photoswipe/dist/photoswipe.css"> 
+<link rel="stylesheet" href="/bower_components/photoswipe/dist/default-skin/default-skin.css">
+
+<!-- PHOTOSWIPE -->
+<script type="text/javascript" src="bower_components/photoswipe/dist/photoswipe.js"></script>
+<script type="text/javascript" src="bower_components/photoswipe/dist/photoswipe-ui-default.min.js"></script>
+
+<script type="text/javascript" src="bower_components/ng-photoswipe/angular-photoswipe.js"></script>
+<script src="https://maps.google.com/maps/api/js?libraries=placeses,visualization,drawing,geometry,places"></script>
+<script type="text/javascript" src="js/lib/ng-map.min.js"></script>
 
 </html>

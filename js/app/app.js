@@ -1,26 +1,67 @@
-angular.module('lookplex',['ngRoute'])
-.config(['$routeProvider', function($routeProvider) {
+angular.module('lookplex',['ngRoute','ngPhotoswipe','ngMap','ngFacebook','googleplus'])
+.config(['$routeProvider','$locationProvider','$facebookProvider','GooglePlusProvider','$httpProvider', 
+
+function($routeProvider, $locationProvider ,$facebookProvider, GooglePlusProvider,$httpProvider) {
 	$tu="templates/";
 	$routeProvider
 	.when("/", { templateUrl:$tu+'/home' })
-	.when("/search/id/:blockID/guid/:blockguid/category/:catid/r/:startindex/:endIndex/:location", { templateUrl:$tu+'/search-result' })
-	.when("/show/profile/:storename/:storeID/:guid", { templateUrl:$tu+'/show' })
+	.when("/search/id/:blockID/guid/:blockguid/category/:catid/r/:startindex/:endIndex/:location/", { templateUrl:$tu+'/search-result' })
+	.when("/show/profile/:storename/:storeID/:guid/", { templateUrl:$tu+'/show' })
 	.when("/unsupportedscreen", { templateUrl:$tu+'/unsupportedscreen/' })
-	/*.otherwise({
+	.otherwise({
 		redirectTo:"/"
-	})*/
-	;
+	})
+	
+	$facebookProvider.setAppId('793762427404557');
+	GooglePlusProvider.init({
+        clientId: '393978119485-6j14o11ndo58jhnaqhir1lgb4hmvkpih.apps.googleusercontent.com',
+        apiKey: 'AIzaSyBkRzmfedoJ2knAFsyxdhH5AuW41ljbu6E'
+     });
+	/*$authProvider.facebook({
+		clientId:'793762427404557'
+	})
+	
+	$authProvider.google({
+      clientId: '393978119485-6j14o11ndo58jhnaqhir1lgb4hmvkpih.apps.googleusercontent.com'
+    })
+    // Facebook
+	$authProvider.facebook({
+	  name: 'facebook',
+	  url: '/auth/',//facebook
+	  authorizationEndpoint: 'https://www.facebook.com/v2.5/dialog/oauth',
+	  redirectUri: window.location.origin + '/',
+	  requiredUrlParams: ['display', 'scope'],
+	  scope: ['email','public_profile'],
+	  scopeDelimiter: ',',
+	  display: 'popup',
+	  type: '2.0',
+	  popupOptions: { width: 580, height: 400 }
+	});*/
+	
+	$locationProvider.html5Mode(true).hashPrefix('!');
+	$httpProvider.defaults.withCredentials = true;
 }])
 
 .run(function($rootScope, $location, $http){
 	$rootScope.env="production";
+	
+//load fb sdk
+(function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
 
+
+//works for route change
 	$rootScope.$on('$locationChangeSuccess', function(event){
 		//console.log($(window).width() );
-		if ($rootScope.env==='production' && $(window).width() > 720) {
+		/*if ($rootScope.env==='production' && $(window).width() > 720) {
 		   //alert('Less than 960');
 		   $location.path('/unsupportedscreen');
-		}
+		}*/
 		
         var url = $location.url()/*,
         params = $location.search()*/;
@@ -169,7 +210,11 @@ angular.module('lookplex',['ngRoute'])
 	    	}
     	}//!=undefined
     	
-    })
+    })//location query end
+
+	$rootScope.fblogin=function(){
+
+	}
 
 
 })

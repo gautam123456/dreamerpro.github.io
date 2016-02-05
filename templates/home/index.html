@@ -3,10 +3,10 @@
 		<h2>Let's Look New Today</h2>
 		<span class="cats">Salon.Spa.Gym.Makeup Artists.Slimming.Dieticians.Yoga.Nail Art.Tattoo.Piercing.Mehendi.</span>
 		<div class="col-md-10 col-md-offset-1 mt-50">
-			<div class="form-group" id="search-bar">
+			<div class="form-group" id="search-bar" tabIndex="-1" data-toggle="modal" data-target="#modal-search" >
 				<button class="btn btn-red pull-right" ng-click="hc.search()"><i class="fa fa-search "></i></button>
-				<input type="search" class="form-control" ng-model="hc.query" placeholder="Search grooming services near you"
-				data-toggle="modal" data-target="#modal-search" class="form-control">
+				<input type="search"  class="form-control" ng-model="hc.query" placeholder="Search grooming services near you"
+				class="form-control">
 				<!-- Need to adjust text align on hover with angular-->
 			</div>
 		</div>

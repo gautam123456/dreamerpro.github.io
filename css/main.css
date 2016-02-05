@@ -101,6 +101,9 @@ a,a:hover{
 .green-bg{
 	background-color:green ;
 }
+.yellow-text{
+	color:yellow ;
+}
 
 
 
@@ -182,6 +185,22 @@ a,a:hover{
 .btn-round i{
     line-height: 15px;
     margin-left: -5px;
+}
+.btn-facebook{
+	height: 40px;
+    margin-top: 20px;
+    /*font-family: 'Open Sans' Sans;*/
+    color: #fff !important;
+    border-radius: 10px;
+    background-color: #6d84b4
+}
+.btn-google{
+	height: 40px;
+    margin-top: 20px;
+    /*font-family: 'Open Sans' Sans;*/
+    color: #fff !important;
+    border-radius: 10px;
+    background-color: #dd4b39;
 }
 
 
@@ -471,12 +490,12 @@ footer{
 }
 .result-list-item{
 	text-align: left;
-	height: 220px;
+	height: 240px;
 	margin: 20px 0;
 	box-shadow: 2px 8px 2px #E0D9D9;
 }
 .result-list-item .item{
-	height: 180px;
+	height: 200px;
 	border-radius: 4px 4px 0 0;
 	background-size: cover !Important;
 	background-color: rgba(0,0,0,0.4);
@@ -487,7 +506,7 @@ footer{
 	color: #fff !Important;
 }
 .item.s{
-	height: 190px;
+	height: 200px;
 	border-radius: 4px 4px 0 0;
     background-size: cover !Important;
     background-color: rgba(0,0,0,0.4);
@@ -521,6 +540,11 @@ width: 100%;
     margin: 4px 3px;
     display: inline-block;
 }
+.rate{
+margin: 10px 0;
+}
+
+
 
 /*INVIDUAL*/
 
@@ -659,3 +683,50 @@ width: 100%;
      width: 1170px;
   }
 }
+
+/*SLIDES*/
+ .slide-list {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .slide-list > li {
+        display: inline;
+    }
+
+    .slide-list > li:hover {
+        cursor: pointer;
+    }
+
+    .slide-list > li > img {
+        width: 100%;
+        height: 100%;
+    }
+
+
+ /******** SIDEBAR ****/
+ .sidebar{
+    width: 100%;
+    height: calc(100% + 80px);
+    background-color: #fff;
+    color: #fff;
+    position: absolute;
+    z-index: 500;
+    border-right: 1px solid #fff;
+    -webkit-transition:4s all linear;
+ }
+ .sidebar.out{
+ 	left: -100%;
+ 	-webkit-transition: 4s all linear;
+ }
+
+ /*LOGIN MODAL*/
+ #login_image{
+ 	height: 250px;
+    width: 250px;
+    margin: 0 auto;
+    background: url('https://static.lookplex.com/images/1.2/assets/logosign.jpg');
+    background-size: contain;
+    background-repeat: none;
+ }

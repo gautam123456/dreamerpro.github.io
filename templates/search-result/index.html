@@ -125,7 +125,7 @@
 	<div class="result-list-item" ng-repeat="store in src.resultList"><!-- center; background-repeat:no-repeat; background-size: contain; -->
 		<div class="item" ng-style="{'background-image': 'url({{store.profileurl}})'}"><!-- https://pt.lookplex.com/WFFJMU9NHR67ARQZEHV4MKLIAT_cover  style="background-image: url(store.coverUrl)"-->
 			<div class="item-infos">
-				<a ng-href="#/show/profile/{{store.storename}}/{{store.id}}/{{store.guid}}" class="item-name"><h4>{{store.storename}}</h4></a>
+				<a ng-href="/show/profile/{{store.storename}}/{{store.id}}/{{store.guid}}" class="item-name"><h4>{{store.storename}}</h4></a>
 				<p class="item-cat">{{store.categoryList|cat_filter:store.categoryList}}</p>
 				<p class="item-address">{{store.address}}</p>
 				<p class="item-aminities">
@@ -140,11 +140,11 @@
 			
 		</div>
 		<div class="item-sub-menu">
-			<a class="ism"><i class="fa fa-phone"></i></a>
-			<a class="ism">Rate Card </a>
-			<a class="ism">Photos </a>
-			<a class="ism">Reviews</a>
-			<a class="ism">Trust </a>
+			<a class="ism" ng-href="tel:{{store.phone}}"><i class="fa fa-phone"></i></a>
+			<a class="ism" ng-href="/show/profile/{{store.storename}}/{{store.id}}/{{store.guid}}/#rc" >Rate Card </a>
+			<a class="ism" ng-href="/show/profile/{{store.storename}}/{{store.id}}/{{store.guid}}/#sp" >Photos </a>
+			<a class="ism" ng-href="/show/profile/{{store.storename}}/{{store.id}}/{{store.guid}}/#re" >Reviews</a>
+			<a class="ism" ng-href="/show/profile/{{store.storename}}/{{store.id}}/{{store.guid}}/#tr" >Trust </a>
 		</div>
 	</div>
 

@@ -32,7 +32,7 @@ angular.module('lookplex')
 	return function(objects,option){
 		var out=[];
 		if(objects==undefined) {return objects;}
-		if(objects=="OFF-"){return "OFF";}
+		if(objects.indexOf("OFF")>-1){return "OFF";}
 
 		out=objects.split('');
 		out.splice(2,0,":");

@@ -189,15 +189,18 @@
 	<div class="item-address col-md-12 panel panel-default ">
 		<h4>Address</h4>
 		<p>{{sc.address}}</p>
-		<div class="map" id="googleMap">
+		<!-- <div class="map" id="googleMap">
 			load map here
-		</div>
+		</div> --><!-- center="-25.363882,131.044922" -->
+		<ng-map  center="{{sc.storeDetails.coordinate}}" zoom="11" style="display: block; height: 250px;">
+		    <marker position="{{sc.storeDetails.coordinate}}" title="Hello World!"></marker>
+		</ng-map>
 	</div>
 
 	<div class="item-services col-md-12 panel panel-default ">
 		<h4>Book Services</h4>
 		<div class="list-group row">
-			<div class="list-group-item"  role="button" data-toggle="collapse" data-target="#service1">
+			<!-- <div class="list-group-item"  role="button" data-toggle="collapse" data-target="#service1">
 				Body Spa Treatment <span class="pull-right">&#8377; 300 <i class="fa fa-plus"></i></span>
 				<div class="collapse" id="service1">
 				  <div class="well">
@@ -206,99 +209,130 @@
 				</div> 
 			</div>
 			<div class="list-group-item">Face Clean Up <span class="pull-right">&#8377; 250 <i class="fa fa-plus"></i></span> </div>
-			<div class="list-group-item">Facial <span class="pull-right">&#8377; 100 <i class="fa fa-plus"></i></span> </div>
+			<div class="list-group-item">Facial <span class="pull-right">&#8377; 100 <i class="fa fa-plus"></i></span> </div> -->
+			<div class="list-group-item">Coming soon.</div>
 		</div>
 	</div>
 
 	<div class="item-photos col-md-12 panel panel-default clearfix">
-		<h4>Rate Card</h4>
+		<h4 id="rc">Rate Card</h4>
+		 <h5 ng-if='sc.storeRateCard.length<1'>Sorry no rate cards available at the moment. <br> </h5>
 		<div class="photos clearfix">
-			
-			<div class="col-xs-2" ng-click="sc.openPhotoSwipe(0)" ng-repeat="rc in sc.storeRateCard">
-				<div ng-style="{'background-image':'url(https://pt.lookplex.com/{{rc.photoUrl}}_medium)'}"></div>
+	       
+			<div class="col-xs-2" ng-repeat="s in sc.storeRateCard track by $index" ng-click="sc.showGallery($index)">
+				<div style="background-image:url({{ s.src }})"></div>
 			</div>
-			<!-- <div class="col-xs-2" onclick="openPhotoSwipe(1)">
-				<div style="background-image:url(https://pt.lookplex.com/5Y1XSRDPMMZKQ573191F905C9B_small)"></div>
+			<!-- <div class="col-xs-2">
+				<div style="background-image:url({{ s.src }})"></div>
 			</div> -->
+			
+			<ng-photoswipe
+			    slides="sc.storeRateCard"
+			    start-on="{{ sc.startEvent }}"
+			    template="/bower_components/ng-photoswipe/views/ng-photoswipe.html"
+			    options="sc.opts">
+			</ng-photoswipe>
+
 		</div>
 		<br>
-		<h4>Photos</h4>
+		<h4 id="sp">Photos</h4>
+		<h5 ng-if='sc.storePhotos.length<1'>Sorry no photos available at the moment. <br> </h5>
 		<div class="photos clearfix" > 
-			<div class="col-xs-2">
-				<div style="background-image:url(https://pt.lookplex.com/5Y1XSRDPMMZKQ573191F905C9B_small)"></div>
+			
+			<div class="col-xs-2" ng-repeat="s in sc.storePhotos track by $index" ng-click="sc.showGallery($index)">
+				<div style="background-image:url({{ s.src }})"></div>
 			</div>
-			<div class="col-xs-2">
-				<div style="background-image:url(https://pt.lookplex.com/5Y1XSRDPMMZKQ573191F905C9B_small)"></div>
-			</div>
+	
+			<ng-photoswipe
+			    slides="sc.storePhotos"
+			    start-on="{{ sc.startEvent }}"
+			    template="/bower_components/ng-photoswipe/views/ng-photoswipe.html"
+			    options="sc.opts">
+			</ng-photoswipe>
 		</div>
 	</div>
 
 	<div class="other-infos panel panel-default col-md-12" ng-init="sc.showall==false">
 		<a ng-if="!sc.showall" href="" class="text-danger pull-right" ng-click="sc.showall=!sc.showall">See More +</a>
 		<a ng-if="sc.showall" href="" class="text-danger pull-right" ng-click="sc.showall=!sc.showall" >See Less -</a>
-		<h4>Opening Hours</h4>
+		<h4 >Opening Hours</h4>
+		<div class="clearfix">
+			<p  ng-show="sc.getToday()==1 || sc.showall">
+				<span class="col-xs-6">Monday </span> 
+				<span class="col-xs-6">{{sc.storeDetails.mondayTiming |time_filter:sc.storeDetails.mondayTiming}}
+			</p>
+			<p ng-show="sc.getToday()==2 || sc.showall">
+				<span class="col-xs-6">Tuesday</span> 
+				<span class="col-xs-6">{{sc.storeDetails.tuesdayTiming |time_filter:sc.storeDetails.tuesdayTiming}}</span> 
+			</p>
+			<p ng-show="sc.getToday()==3 || sc.showall">
+				<span class="col-xs-6">Wednesday</span> 
+				<span class="col-xs-6">{{sc.storeDetails.wednesdayTiming |time_filter:sc.storeDetails.wednesdayTiming}}</span> 
+			</p>
+			<p ng-show="sc.getToday()==4 || sc.showall">
+				<span class="col-xs-6">Thursday</span> 
+				<span class="col-xs-6">{{sc.storeDetails.thursdayTiming |time_filter:sc.storeDetails.thursdayTiming}}</span> 
+			</p>
+			<p ng-show="sc.getToday()==5 || sc.showall">
+				<span class="col-xs-6">Friday</span> 
+				<span class="col-xs-6">{{sc.storeDetails.fridayTiming |time_filter:sc.storeDetails.fridayTiming}}</span> 
+			</p>
+			<p ng-show="sc.getToday()==6 || sc.showall">
+				<span class="col-xs-6">Saturday</span> 
+				<span class="col-xs-6">{{sc.storeDetails.saturdayTiming |time_filter:sc.storeDetails.saturdayTiming}}</span> 
+			</p>
+			<p ng-show="sc.getToday()==7 || sc.showall">
+				<span class="col-xs-6">Sunday</span> 
+				<span class="col-xs-6">{{sc.storeDetails.sundayTiming |time_filter:sc.storeDetails.sundayTiming}}</span> 
+			</p>
+		</div>
 		
-		<p  ng-show="sc.getToday()==1 || sc.showall">
-			<span class="col-xs-3">Monday </span> 
-			<span class="col-xs-3">{{sc.storeDetails.mondayTiming |time_filter:sc.storeDetails.mondayTiming}}
-		</p>
-		<p ng-show="sc.getToday()==2 || sc.showall">
-			<span class="col-xs-3">Tuesday</span> 
-			<span class="col-xs-3">{{sc.storeDetails.tuesdayTiming |time_filter:sc.storeDetails.tuesdayTiming}}</span> 
-		</p>
-		<p ng-show="sc.getToday()==3 || sc.showall">
-			<span class="col-xs-3">Wednesday</span> 
-			<span class="col-xs-3">{{sc.storeDetails.wednesdayTiming |time_filter:sc.storeDetails.wednesdayTiming}}</span> 
-		</p>
-		<p ng-show="sc.getToday()==4 || sc.showall">
-			<span class="col-xs-3">Thursday</span> 
-			<span class="col-xs-3">{{sc.storeDetails.thursdayTiming |time_filter:sc.storeDetails.thursdayTiming}}</span> 
-		</p>
-		<p ng-show="sc.getToday()==5 || sc.showall">
-			<span class="col-xs-3">Friday</span> 
-			<span class="col-xs-3">{{sc.storeDetails.fridayTiming |time_filter:sc.storeDetails.fridayTiming}}</span> 
-		</p>
-		<p ng-show="sc.getToday()==6 || sc.showall">
-			<span class="col-xs-3">Saturday</span> 
-			<span class="col-xs-3">{{sc.storeDetails.saturdayTiming |time_filter:sc.storeDetails.saturdayTiming}}</span> 
-		</p>
-		<p ng-show="sc.getToday()==7 || sc.showall">
-			<span class="col-xs-3">Sunday</span> 
-			<span class="col-xs-3">{{sc.storeDetails.sundayTiming |time_filter:sc.storeDetails.sundayTiming}}</span> 
-		</p>
 		
 		<!-- <p>12 Noon to 11PM</p>
 		<p ng-show="sc.showall">12 Noon to 11PM</p>
 		<p ng-show="sc.showall">12 Noon to 11PM</p> -->
 		<br>
 		<h4>HIGHLIGHTS</h4>
-		<p><i class="fa fa-check-circle-o text-success"></i> Unisex</p>
-		<p><i class="fa fa-check-circle-o text-success"></i> Air conditioned</p>
-		<p><i class="fa fa-check-circle-o text-success"></i> Parking Available</p>
-		<p><i class="fa fa-check-circle-o text-success"></i> Wi-Fi enabled</p>
-		<p><i class="fa fa-times-circle text-danger"></i> Accepts Credit/ Debit Card</p>
+		<p><i class="fa" ng-class="sc.getClasses('unisex')"></i> Unisex</p>
+		<p><i class="fa" ng-class="sc.getClasses('ac')"></i> Air conditioned</p>
+		<p><i class="fa" ng-class="sc.getClasses('parking')"></i> Parking Available</p>
+		<p><i class="fa" ng-class="sc.getClasses('wifi')"></i> Wi-Fi available</p>
+		<p><i class="fa" ng-class="sc.getClasses('credit')"></i> Accepts Credit/ Debit Card</p>
 		<p><i class="fa fa-check-circle-o text-success"></i> Pets Available</p>
 		<br>
-		<h4>REVIEWS</h4>
+		<h4 id="re">REVIEWS</h4>
 		<div class="blue-bg cp"><!--style in reset -->
-			<h3 class="wt mt4 ">Write a Review</h3>
+			<h3 class="wt mt4 "  ng-init="sc.writeReview=false" ng-click="sc.writeReview=!sc.writeReview">Write a Review</h3>
+		</div>
+		<div id="writereview" class="panel panel-deafult" ng-show="sc.writeReview">
+			<div class="rate" >
+				<i class="fa fa-2x" ng-repeat="i in [1,2,3,4,5]" 
+					ng-class="{'yellow-text':sc.setYellow(i),'fa-star-o':!sc.setYellow(i),'fa-star':sc.setYellow(i)}" 
+					ng-click="sc.setRate(i)"></i>
+					<span class="pull-right">{{sc.myrating}} stars</span>
+			</div>
+			<textarea class="form-control" ng-model="sc.myreview" placeholder="Minimun 100 and maximum 300 characters allowed."></textarea>
+			<div class="panel-footer">
+				<button class="btn btn-white" style="height: 50px;" ng-click="sc.cancelReview()">Cancel</button>
+				<button class="btn btn-blue pull-right">Submit</button>
+			</div>
 		</div>
 		<div class="list-group">
-			<div class="list-group-item">Review 1</div>
+			<div class="list-group-item">Show all review here. Its structure not known.</div>
 		</div>
 		<br>
-		<h4>Trust</h4>
+		<h4 id="tr">Trust</h4>
 		<div class="trust clearfix">
 			<div class="col-xs-4">
-				<div class="sq-box red-bg">4.3</div>
+				<div class="sq-box red-bg">{{sc.storeDetails.totalRating? sc.storeDetails.totalRating: '0'}}</div>
 				Ratings
 			</div>
 			<div class="col-xs-4 ">
-				<div class="sq-box green-bg">4.3</div>
+				<div class="sq-box green-bg">{{sc.storeDetails.totalReview? sc.storeDetails.totalReview: '0'}}</div>
 				Reviews
 			</div>
 			<div class="col-xs-4 ">
-				<div class="sq-box blue-bg">4.3</div>
+				<div class="sq-box blue-bg">{{'0'}}</div>
 				Favourites
 			</div>
 		</div>
@@ -318,42 +352,3 @@
 
 </div>
 
-<!-- PHOTOSWIPE -->
-
-<gallery></gallery>
-
-
-<!-- Core CSS file -->
-<link rel="stylesheet" href="/bower_components/photoswipe/dist/photoswipe.css"> 
-
-<!-- Skin CSS file (styling of UI - buttons, caption, etc.)
-     In the folder of skin CSS file there are also:
-     - .png and .svg icons sprite, 
-     - preloader.gif (for browsers that do not support CSS animations) -->
-<link rel="stylesheet" href="/bower_components/photoswipe/dist/default-skin/default-skin.css"> 
-
-<!-- Core JS file -->
-<script src="/bower_components/photoswipe/dist/photoswipe.min.js"></script> 
-
-<!-- UI JS file -->
-<script src="/bower_components/photoswipe/dist/photoswipe-ui-default.min.js"></script> 
-
-
-<script type="text/javascript">
-
-
-/*openPhotoSwipe();*/
-
-/*document.getElementById('btn').onclick = openPhotoSwipe;*/
-
-function initialize() {
-  var mapProp = {
-    center:new google.maps.LatLng(51.508742,-0.120850),
-    zoom:5,
-    mapTypeId:google.maps.MapTypeId.ROADMAP
-  };
-  var map=new google.maps.Map(document.getElementById("googleMap"), mapProp);
-}
-google.maps.event.addDomListener(window, 'load', initialize);
-
-</script>

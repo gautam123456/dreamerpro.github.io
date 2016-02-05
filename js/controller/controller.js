@@ -1,31 +1,40 @@
 angular.module('lookplex')
-.controller('ShowController', function($routeParams,$location, $http){
+.controller('ShowController', function($routeParams, $location, $http, $scope, $anchorScroll){
 
 	var that=this;
 	//http get data
 	that.query=$routeParams;
-	console.log(that.query);
+	//console.log(that.query);
 	that.storeDetails=null;
 	that.storeRateCard=[];
+	that.storePhotos=[];
+	that.hashid=$location.hash();
+	that.myrating='-';
+	that.myreview='';
 
+	$scope.$on('$routeUpdate', function(scope, next, current) {
+   		// Minimize the current widget and maximize the new one
+   		console.log('hello');
+	});
 	//GET Store details
 	$http({
-    	method: 'POST',
-		url: 'https://storeapi.lookplex.com/ws/masnepservice/getstoredetails',
-		data: $.param($routeParams),//serialize
-		headers: {
-			'Content-Type': 'application/x-www-form-urlencoded'//'text/plain' //
-		}
-	})
-	.success(function(data){
-		console.log(data)
-		that.storeDetails=data;
-	})
-	.error(function(data){
-		console.log(data)
+	    	method: 'POST',
+			url: 'https://storeapi.lookplex.com/ws/masnepservice/getstoredetails',
+			data: $.param($routeParams),//serialize
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded'//'text/plain' //
+			}
+		})
+		.success(function(data){
+			//console.log(data)
+			that.storeDetails=data;
+		})
+		.error(function(data){
+			console.log(data)
 	});
 
 	//GET RATE CARD
+
 	$http({
     	method: 'POST',
 		url: 'https://storeapi.lookplex.com/ws/masnepservice/getratecard',
@@ -35,68 +44,105 @@ angular.module('lookplex')
 		}
 	})
 	.success(function(data){
-		console.log(data);
-		that.storeRateCard=data;
-		
-		
+		//console.log(data);
+		if(data===null){
+			return false;
+		}
+		for (var i = 0; i < data.length; i++) {
+    		that.storeRateCard.push({src:'https://pt.lookplex.com/'+data[i].photoUrl+"_medium",w:500,h:500});
+    	}		
+    	//console.log(that.storeRateCard);
 	})
 	.error(function(data){
 		console.log(data)
-	});
+	})
+
+	//GET STORE PHOTOS
+
+	$http({
+    	method: 'POST',
+		url: 'https://storeapi.lookplex.com/ws/masnepservice/getstorephotos',
+		data: $.param({id:$routeParams.storeID,gid:$routeParams.guid}),//serialize
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded' // 'text/plain' //
+		}
+	})
+	.success(function(data){
+		//console.log(data);
+		if(data===null){
+			return false;
+		}
+		for (var i = 0; i < data.length; i++) {
+    		that.storePhotos.push({src:'https://pt.lookplex.com/'+data[i].photoUrl+"_medium",w:500,h:500});
+    	}		
+    	//console.log(that.storePhotos);
+	})
+	.error(function(data){
+		console.log(data)
+	})
 
 	//get now
 	this.getToday=function(){
-		var date = new Date(_.now());
-		//var month = date.getMonth();
+		var date = new Date(_.now());//var month = date.getMonth();		
 		var day=date.getDay();
 		return day;
 	}
 
-//Photoswipe
-		this.openPhotoSwipe = function(index) {
-			var that=this;
-		    var pswpElement = document.querySelectorAll('.pswp')[0];
-		  /*  if(type==1){//ratecard
+	/*GALLERY*/
 
-		    }*/
-		    // build items array
-		   /* var items = [
-		        {
-		            src: 'https://farm2.staticflickr.com/1043/5186867718_06b2e9e551_b.jpg',
-		            w: 964,
-		            h: 602
-		        },
-		        {
-		            src: 'https://farm7.staticflickr.com/6175/6176698785_7dee72237e_b.jpg',
-		            w: 1024,
-		            h: 683
-		        }
-		    ];*/
-		    var items = [ ];
-		    for (var i = 0; i < that.storeRateCard.length; i++) {
-		    	//console.log(that.storeRateCard[i]);
-				items.push({ src:that.storeRateCard[i].photoUrl+"_medium",w:500,h:700});	
-			};
-			console.log(items, that.storeRateCard[0].photoUrl);
-		    
-		    // define options (if needed)
-		    var options = {
-		             // history & focus options are disabled on CodePen        
-		        history: true,
-		        focus: true,
+	this.title = 'ngPhotoswipe';
+  	this.startEvent = 'START_GALLERY';
 
-		        index: 2,
+  	this.opts = {
+    	index: 0
+  	};
 
-		        showAnimationDuration: 1,
-		        hideAnimationDuration: 0
-		        
-		    };
-		    options.index=index;
-		    //console.log(options);
-		    var gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
-		    gallery.init();
-		};
+  	this.showGallery = function (i) {
+    	this.opts.index = i || this.opts.index;
+    	$scope.$broadcast(this.startEvent);
+  	};
 
+/*GET HIGHLIGHTS*/
+
+	this.getHighlight=function(type){
+		if(that.storeDetails===null){return false;}
+		if(type==='unisex'){return that.storeDetails.attributeList.indexOf('fm')>-1 && that.storeDetails.attributeList.indexOf('fw')>-1;}
+		else if(type==='wifi'){return that.storeDetails.attributeList.indexOf('wi')>-1;}
+		else if(type==='ac'){return that.storeDetails.attributeList.indexOf('ac')>-1;}
+		else if(type==='parking'){return that.storeDetails.attributeList.indexOf('pa')>-1;}
+		else if(type==='credit'){return that.storeDetails.attributeList.indexOf('ca')>-1;}
+	}
+	this.getClasses=function(type){
+		if(that.getHighlight(type)){
+			return 'fa-check-circle-o text-success';
+			/*'fa-check-circle-o':sc.getHighlight('unisex'),
+			  		'text-success':sc.getHighlight('unisex'),
+			  		'fa-times-circle':!sc.getHighlight('unisex'),
+			  		'text-danger':!sc.getHighlight('unisex')*/
+		}
+		else{
+			return 'fa-times-circle text-danger';
+		}
+	}
+	/*SCROLL IF HASH PRESENT*/
+	if(that.hashid){
+		$location.hash(that.hashid);
+     	$anchorScroll();
+	}
+	/*REVIEW AND RATING*/
+	this.setRate=function(val){
+		that.myrating=val;
+		console.log(val,that.myrating);
+	}
+
+	this.setYellow=function(val){
+		return val<=that.myrating;
+	}
+	this.cancelReview=function(){
+		that.myrating='-';
+		that.myreview='';
+		that.writeReview=false;
+	}
 
 })
 
@@ -228,6 +274,17 @@ angular.module('lookplex')
             	+$routeParams.location
             	);
 	}
+/*	this.createHashedLink=function(){
+		
+			$location.path('/search/id/'
+            	+$routeParams.blockID+"/guid/"
+            	+$routeParams.blockguid+"/category/"
+            	+$routeParams.catid+"/r/"
+            	+1+"/"
+            	+10+"/"
+            	+$routeParams.location
+            	);
+	}*/
 
 	this.cs={left:false,right:true};//show next or previous
 	
@@ -250,3 +307,64 @@ angular.module('lookplex')
 	}
 
 })
+
+.controller('LoginController', ['GooglePlus','$facebook','$http',function(GooglePlus, $facebook, $http){
+	var _self=this;
+	this.googlelogin = function () {
+        GooglePlus.login().then(function (authResult) {
+            console.log(authResult);
+
+            GooglePlus.getUser().then(function (user) {
+                console.log(user);
+                _self.usersaveorconnect( null,user.id,authResult.access_token, 'gplus');
+            });
+        }, function (err) {
+            console.log(err);
+        });
+    }
+    this.facebooklogin=function(){
+    	$facebook.login().then(
+    		function(response) {
+	        //this.welcomeMsg = "Welcome " + response;
+	        console.log(response);
+
+	        _self.usersaveorconnect(response.authResponse.userID, null, response.authResponse.accessToken,'facebook');
+	        
+	        $facebook.api("/me").then( 
+		      	function(response) {
+		        	this.welcomeMsg = "Welcome " + response.name;
+		        	console.log(this.welcomeMsg);
+		      	},
+		      	function(err) {
+		        	this.welcomeMsg = "Please log in";
+		        	console.log(this.welcomeMsg);
+		      	});
+
+	      },
+	      function(err) {
+	        this.welcomeMsg = "Please log in";
+	        console.log(err);
+	      }
+      );
+    }
+
+    this.usersaveorconnect=function(_fbid,_gpid,_token,_platform){
+    	//console.log(_fbid,_gpid,_token,_platform);
+    	$http({
+    		method: 'POST',
+    		url: 'https://storeapi.lookplex.com/ws/masnepservice/saveCust',
+			data: $.param({fbid:_fbid,gpid:_gpid,token:_token,platform:_platform}),//serialize
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded', // 'text/plain' //
+			}
+    	}).then(
+    		function(resp){
+    			console.log(resp);
+    		},
+    		function(resps){
+    			console.log(resps);
+    		}
+    	)//
+    }
+
+}])
