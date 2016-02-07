@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html ng-app="lookplex">
 <head>
 	<title>Lookplex</title>
@@ -36,6 +37,33 @@
 
 			<button class="btn btn-blue form-control" ng-click="search()"><b>Search</b></button>
 
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal modal-fullscreen fade" id="modalhiw" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-body">
+      	<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+      	<div class="col-md-12 hiw" style="background-image:url(images/hiw.svg)"></div>
+      	<div class="hiw-details col-md-12">
+      		<h4>Search</h4>
+      		<p>Discover the Beauty, Wellness and Fitness destinations around you.</p>
+      	</div>
+      	<div class="col-md-12 hiw" style="background-image:url(images/hiw.svg)"></div>
+      	<div class="hiw-details col-md-12">
+      		<h4>VISIT</h4>
+      		<p>Visit the grooming centers of your choice to find your best self again.</p>
+      	</div>
+      	<div class="col-md-12 hiw" style="background-image:url(images/hiw.svg)"></div>
+      	<div class="hiw-details col-md-12">
+      		<h4>RATE AND REVIEW</h4>
+      		<p>Rate, review and share your look experiences in your social circles.</p>
+      	</div>
 
       </div>
     </div>
@@ -86,13 +114,13 @@
 	</div>
 	
 </header>
-<div class="clearfix sidebar" ng-class="{'out':!sidebar}">
+<div class="clearfix sidebar" ng-class="{'out':!sidebar}" ng-controller="SideBarCtrl as sbc">
 	<div class="list-group">
-		<a class="list-group-item" href="/" ng-click="sidebar=false">Home</a>
-		<a class="list-group-item" data-toggle="modal" data-target="#modallogin" ng-click="sidebar=false">Log In</a>
-		<a class="list-group-item" data-toggle="modal"  data-target="#modal-search" ng-click="sidebar=false">Search</a>
-		<a class="list-group-item">Discover</a>
-		<a class="list-group-item">How it Works</a>
+		<a class="list-group-item" ng-click="sbc.home()">Home</a>
+		<a class="list-group-item" data-toggle="modal" data-target="#modallogin" ng-click="sbc.toggleSideBar()" ng-show='!sbc.isAuthenticated()'>Log In</a>
+		<a class="list-group-item" data-toggle="modal" data-target="#modal-search" ng-click="sbc.toggleSideBar()">Search</a>
+		<a class="list-group-item"  ng-click="sbc.discover()">Discover</a>
+		<a class="list-group-item" data-toggle="modal" data-target="#modalhiw" ng-click="sbc.toggleSideBar()" >How it Works</a>
 	</div>
 	
 </div>
@@ -130,6 +158,7 @@
 <script type="text/javascript" src="js/controller/controller.js"></script>
 <script type="text/javascript" src="js/directive/directive.js"></script>
 <script type="text/javascript" src="js/filters/filters.js"></script>
+<script type="text/javascript" src="js/service/service.js"></script>
 
 <script src="bower_components/ng-facebook/ngFacebook.js"></script>
 <script src="bower_components/angular-google-plus/dist/angular-google-plus.min.js"></script>

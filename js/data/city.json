@@ -1,0 +1,52 @@
+{
+    "delhincr": {
+        "cityid": 1731,
+        "cityguid": "ARTUIKJHGT",
+        "cityname":"Delhi NCR"
+    },
+    "southdelhi": {
+        "cityid": 1733,
+        "cityguid": "HUILOPMNDG",
+        "cityname":"South Delhi"
+     },
+    "gurgaon": {
+       "cityid": 1740,
+        "cityguid": "WERTHUKUND",
+        "cityname":"Gugaon"
+    },
+    "westdelhi": {
+        "cityid": 1734,
+        "cityguid": "YTUIHGENDT",
+        "cityname":"West Delhi"
+    },
+    "northdelhi": {
+        "cityid": 1732,
+        "cityguid": "HJUTKOLEKI",
+        "cityname":"North Delhi"
+    },
+    "noida": {
+        "cityid": 1739,
+        "cityguid": "WBHJKLOUTD",
+        "cityname":"Noida"
+    },
+    "ghaziabad": {
+        "cityid": 1736,
+        "cityguid": "WERTGVFDSC",
+        "cityname":"Ghaziabad"
+    },
+    "eastdelhi": {
+        "cityid": 1735,
+        "cityguid": "EDCFRTGBFD",
+        "cityname":"East Delhi"
+    },
+    "centraldelhi": {
+        "cityid": 1738,
+        "cityguid": "ERTHNKLOIU",
+        "cityname":"Central Delhi"
+    },
+    "faridabad": {
+        "cityid": 1737,
+        "cityguid": "WERBHTJKLY",
+        "cityname":"Faridabad"
+    }
+}

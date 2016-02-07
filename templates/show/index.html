@@ -168,16 +168,16 @@
 					<i ng-hide="sc.storeDetails.attributeList.indexOf('wi')<0" class="fa fa-wifi" data-toggle="tooltip" data-placement="left" title="" data-original-title="Wifi"></i>
 					<i ng-hide="sc.storeDetails.attributeList.indexOf('ca')<0" class="fa fa-credit-card" data-toggle="tooltip" data-placement="left" title="" data-original-title="Credit/Debit Card"></i>
 			</p>
-			<div class="sub-in-item">
-				<div class="">
+			<div class="sub-in-item" >
+				<div class="" ng-click="sc.gotoReview()">
 					<i class="fa fa-star-o"></i>
 					Rate & Review
 				</div>
-				<div class="">
+				<div class="" ng-click='sc.toggleBookmark(sc.storeDetails.id,sc.storeDetails.guid)'>
 					<i class="fa fa-bookmark-o"></i>
-					Rate & Review
+					Bookmark
 				</div>
-				<div class="">
+				<div class="" ng-click='sc.toggleCheckIn(sc.storeDetails.id,sc.storeDetails.guid)'>
 					<i class="fa fa-check"></i>
 					Chek In
 				</div>
@@ -222,9 +222,6 @@
 			<div class="col-xs-2" ng-repeat="s in sc.storeRateCard track by $index" ng-click="sc.showGallery($index)">
 				<div style="background-image:url({{ s.src }})"></div>
 			</div>
-			<!-- <div class="col-xs-2">
-				<div style="background-image:url({{ s.src }})"></div>
-			</div> -->
 			
 			<ng-photoswipe
 			    slides="sc.storeRateCard"
@@ -288,9 +285,7 @@
 		</div>
 		
 		
-		<!-- <p>12 Noon to 11PM</p>
-		<p ng-show="sc.showall">12 Noon to 11PM</p>
-		<p ng-show="sc.showall">12 Noon to 11PM</p> -->
+
 		<br>
 		<h4>HIGHLIGHTS</h4>
 		<p><i class="fa" ng-class="sc.getClasses('unisex')"></i> Unisex</p>
@@ -314,11 +309,11 @@
 			<textarea class="form-control" ng-model="sc.myreview" placeholder="Minimun 100 and maximum 300 characters allowed."></textarea>
 			<div class="panel-footer">
 				<button class="btn btn-white" style="height: 50px;" ng-click="sc.cancelReview()">Cancel</button>
-				<button class="btn btn-blue pull-right">Submit</button>
+				<button class="btn btn-blue pull-right" ng-click="sc.saveReview()">Submit</button>
 			</div>
 		</div>
 		<div class="list-group">
-			<div class="list-group-item">Show all review here. Its structure not known.</div>
+			<div class="list-group-item" ng-repeat="review in sc.allreviews">{{review}}</div>
 		</div>
 		<br>
 		<h4 id="tr">Trust</h4>

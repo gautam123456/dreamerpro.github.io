@@ -1,0 +1,77 @@
+
+
+<div ng-controller="PopularCtrl as src" >
+
+
+
+
+
+<div ><!-- ENCLOSER -->
+
+	<div class="result-page-header col-md-12">
+		<div class="sponsoredcover" ng-style="{'background-image':'url('+src.background+')'}">
+			<h5>{{getCategory(searchParam.catids).name}}</h5>
+			<h3>{{src.getCityName(searchParam.cityid)}} - Premier Look Destinations</h3>
+
+		</div>
+		
+
+	
+		<nav class="row">
+		  <ul class="categories" ng-class="{pl8:!src.cs.left}">
+		    <li class='col-md-1 al' ng-show="src.cs.left" ng-click="src.sl()">
+		      <a aria-label="Previous">
+		        <span aria-hidden="true">&laquo;</span>
+		      </a>
+		    </li>
+		   	
+		   	<li  ng-repeat="cat in categoriesList" ng-class="{'active':src.isCatActive({{cat.id}})}">
+		    	<a href="" ng-click="src.createLink(cat.id)" >{{cat.name}}</a>
+		    </li>
+		    
+		    <li class='col-md-1 ar' ng-show="src.cs.right" ng-click="src.sr()">
+		      <a class="pull-right" aria-label="Next">
+		        <span aria-hidden="true">&raquo;</span>
+		      </a>
+		    </li>
+		  </ul>
+		</nav>
+
+	</div>
+	<br>
+	<div class="result-list">
+
+	<div class="result-list-item" ng-repeat="store in src.resultList"><!-- center; background-repeat:no-repeat; background-size: contain; -->
+		<div class="item" ng-style="{'background-image': 'url({{store.profileurl}})'}"><!-- https://pt.lookplex.com/WFFJMU9NHR67ARQZEHV4MKLIAT_cover  style="background-image: url(store.coverUrl)"-->
+			<div class="item-infos" style="margin-top: 80px !important;">
+				<a ng-href="/show/profile/{{store.storename}}/{{store.id}}/{{store.guid}}" class="item-name"><h4>{{store.storename}}</h4></a>
+				<p class="item-cat">{{store.categoryList|cat_filter:store.categoryList}}</p>
+				<p class="item-address">{{store.address}}</p>
+			<!-- 	<p class="item-aminities">
+					<i ng-hide="store.attributeList.indexOf('fm')<0" class="fa fa-male" data-toggle="tooltip" data-placement="left" title="" data-original-title="Male"></i>
+					<i ng-hide="store.attributeList.indexOf('fw')<0" class="fa fa-female" data-toggle="tooltip" data-placement="left" title="" data-original-title="Female"></i>
+					<i ng-hide="store.attributeList.indexOf('ac')<0" class="fa fa-asterisk" data-toggle="tooltip" data-placement="left" title="" data-original-title="AC"></i>
+					<i ng-hide="store.attributeList.indexOf('pa')<0" class="fa fa-car" data-toggle="tooltip" data-placement="left" title="" data-original-title="Car Parking"></i>
+					<i ng-hide="store.attributeList.indexOf('wi')<0" class="fa fa-wifi" data-toggle="tooltip" data-placement="left" title="" data-original-title="Wifi"></i>
+					<i ng-hide="store.attributeList.indexOf('ca')<0" class="fa fa-credit-card" data-toggle="tooltip" data-placement="left" title="" data-original-title="Credit/Debit Card"></i>
+				</p> -->
+			</div>
+			
+		</div>
+		<div class="item-sub-menu">
+			<a class="ism hidden" ng-href="tel:{{store.phone}}"><i class="fa fa-phone"></i></a>
+			<a style="" class="ism" ng-href="/show/profile/{{store.storename}}/{{store.id}}/{{store.guid}}/#rc" >Rate Card </a>
+			<a class="ism" ng-href="/show/profile/{{store.storename}}/{{store.id}}/{{store.guid}}/#sp" >Photos </a>
+			<a class="ism" ng-href="/show/profile/{{store.storename}}/{{store.id}}/{{store.guid}}/#re" >Reviews</a>
+			<a class="ism" ng-href="/show/profile/{{store.storename}}/{{store.id}}/{{store.guid}}/#tr" >Trust </a>
+		</div>
+	</div>
+
+	</div>
+
+
+
+</div><!-- END ENCLOSER -->
+
+
+</div>

@@ -5,84 +5,123 @@
 
 
 
-<div class="filters col-md-12" ng-show="showFilters">
-<div class="header grey-bg row col-md-12">
-<span class="text-danger pull-right mt-13">Reset filters <i class="fa fa-times-circle-o "></i> </span>
-<h3 >Filters</h3>
-</div>
-
-<div class="filter-item">
-	<h4>Sort by</h4>
-	<div class="form-group">
-	<label><input type="checkbox"> Popularity - High to Low</label>
+<div class="filters col-md-12" ng-show="showFilters" ng-controller="FilterCtrl as fc">
+	<div class="header grey-bg row col-md-12">
+	<span class="text-danger pull-right mt-13" ng-click="fc.reset()">Reset filters <i class="fa fa-times-circle-o "></i> </span>
+	<h3 >Filters</h3>
 	</div>
 
-	<div class="form-group">
-	<label><input type="checkbox"> Rating - High to Low</label>
+	<div class="filter-item">
+		<h4>Sort by</h4>
+		<div class="form-group">
+		<label><input type="radio" ng-model="fc.filters.sortby" value="popularity"> Popularity - High to Low</label>
+		</div>
+
+		<div class="form-group">
+		<label><input type="radio"  ng-model="fc.filters.sortby" value="rating"> Rating - High to Low</label>
+		</div>
+	</div>
+	<hr>
+	<div class="filter-item">
+
+		<h4>Brands</h4>
+		<div class="form-group" ng-repeat="b in src.brandList">
+			<label>
+				<input 
+				type="checkbox" 
+				name="brandname[]" 
+				ng-checked="fc.selectedBrand.indexOf({{b.id}})>-1" 
+				ng-click="fc.toggleBrand(b.id)" 
+				value="b.categoryId">
+				{{b.brandName}}</label>
+		</div>
+
+
 	</div>
 
-</div>
-<hr>
-<div class="filter-item">
+	<hr>
+	<div class="filter-item">
 
-	<h4>Brands</h4>
-	<div class="form-group">
-	<label><input type="checkbox"> Affinity</label>
-	</div>
+		<h4>Gender</h4>
+		{{selectedGender}}
+		<div class="form-group">
+		<label><input type="radio" ng-model="selectedGender" value="{{src.aminityList[3].id}}"> Male</label>
+		</div>
 
-	<div class="form-group">
-	<label><input type="checkbox"> Mosoon & Spa</label>
-	</div>
+		<div class="form-group">
+		<label><input type="radio" ng-model="selectedGender" value="{{src.aminityList[2].id}}"> Female</label>
+		</div>
+		<div class="form-group">
+		<label><input type="radio" ng-model="selectedGender" value="{{src.aminityList[2].id}},{{src.aminityList[3].id}}"> Unisex</label>
+		</div>
 
-</div>
+	</div>
+	<hr>
+	<div class="filter-item">
 
-<hr>
-<div class="filter-item">
+		<h4>More Filters</h4>
+		<div class="form-group">
+			{{fc.selectedAminity}}
+		<label>
+			<input 
+			type="checkbox" 
+			ng-checked="fc.selectedAminity.indexOf({{fc.getToday()}})>-1" 
+			ng-model="fc.ot"
+			ng-click="fc.toggleday()"
+			ng-value="{{fc.getToday()}}"> Open Today</label>
+		</div>
 
-	<h4>Gender</h4>
-	<div class="form-group">
-	<label><input type="checkbox"> Male</label>
+		<div class="form-group">
+		<label>
+			{{fc.selectedAminity.indexOf(src.aminityList[5].id)}}
+			<input 
+			type="checkbox" 
+			ng-checked="{{c.selectedAminity.indexOf(src.aminityList[5].id)>-1}}" 
+			ng-model="fc.ds"
+			ng-click="fc.toggleAminity(src.aminityList[5].id)"
+			value="src.aminityList[5].id"> Doorstep Services</label>
+		</div>
+		<div class="form-group">
+		<label>
+			<input type="checkbox" 
+			ng-checked="fc.selectedAminity.indexOf({{src.aminityList[1].id}})>-1" 
+			ng-model="fc.ca"
+			ng-click="fc.toggleAminity(src.aminityList[1].id)"
+			value="src.aminityList[1].id"> Credit/Debit Card</label>
+		</div>
+		<div class="form-group">
+		<label><input 
+			type="checkbox"
+			ng-checked="fc.selectedAminity.indexOf({{src.aminityList[0].id}})>-1" 
+			ng-model="fc.ac"
+			ng-click="fc.toggleAminity(src.aminityList[0].id)"
+			value="src.aminityList[0].id"> Air conditioned</label>
+		</div>
+		<div class="form-group">
+		<label><input 
+			type="checkbox"
+			ng-checked="fc.selectedAminity.indexOf({{src.aminityList[13].id}})>-1" 
+			ng-click="fc.toggleAminity(src.aminityList[13].id)"
+			ng-model="fc.we"
+			value="src.aminityList[13].id"> Wi-fi enabled</label>
+		</div>
+		<div class="form-group">
+		<label><input 
+			type="checkbox"
+			ng-checked="fc.selectedAminity.indexOf({{src.aminityList[7].id}})>-1" 
+			ng-click="fc.toggleAminity(src.aminityList[7].id)"
+			ng-model="fc.pa"
+			value="src.aminityList[7].id"> Parking available</label>
+		</div>
+		<div class="form-group">
+		<br>
+		</div>
 	</div>
-
-	<div class="form-group">
-	<label><input type="checkbox"> Female</label>
+	<hr>
+	<div id="filter-footer" class="col-xs-12 row">
+		<div class="btn btn-white" ng-click="src.toggleSF()">Cancel</div>
+		<div class="btn btn-red-wb1 pull-right" ng-click="fc.submitFilter()">Apply Filters</div>
 	</div>
-	<div class="form-group">
-	<label><input type="checkbox"> Unisex</label>
-	</div>
-</div>
-<hr>
-<div class="filter-item">
-
-	<h4>More Filters</h4>
-	<div class="form-group">
-	<label><input type="checkbox"> Open Today</label>
-	</div>
-
-	<div class="form-group">
-	<label><input type="checkbox"> Doorstep Services</label>
-	</div>
-	<div class="form-group">
-	<label><input type="checkbox"> Credit/Debit Card</label>
-	</div>
-	<div class="form-group">
-	<label><input type="checkbox"> Air conditioned</label>
-	</div>
-	<div class="form-group">
-	<label><input type="checkbox"> Wi-fi enabled</label>
-	</div>
-	<div class="form-group">
-	<label><input type="checkbox"> Parking available</label>
-	</div>
-	<div class="form-group">
-	<br>
-	</div>
-</div>
-<hr>
-<div id="filter-footer" class="col-xs-12 row">
-	<div class="btn btn-white" ng-click="src.toggleSF()">Cancel</div>
-	<div class="btn btn-red-wb1 pull-right">Apply Filters</div>
-</div>
 
 
 </div>
@@ -93,12 +132,12 @@
 <div ng-show="!showFilters"><!-- ENCLOSER -->
 
 	<div class="result-page-header col-md-12">
-		<h4>{{getCategory(src.query.catid).name}} in {{src.query.location}}</h4>
+		<h4>{{getCategory(searchParam.catid).name}} in {{searchParam.location}}</h4>
 
 		<ol class="breadcrumb row">
 		  <li><a href="#">Home</a></li>
-		  <li><a href="">{{src.query.location}}</a></li>
-		  <li class="active">{{getCategory(src.query.catid).name}}</li>
+		  <li><a href="">{{searchParam.location}}</a></li>
+		  <li class="active">{{getCategory(searchParam.catid).name}}</li>
 		</ol>
 
 		<nav class="row">

@@ -4,40 +4,23 @@ angular.module('lookplex',['ngRoute','ngPhotoswipe','ngMap','ngFacebook','google
 function($routeProvider, $locationProvider ,$facebookProvider, GooglePlusProvider,$httpProvider) {
 	$tu="templates/";
 	$routeProvider
-	.when("/", { templateUrl:$tu+'/home' })
-	.when("/search/id/:blockID/guid/:blockguid/category/:catid/r/:startindex/:endIndex/:location/", { templateUrl:$tu+'/search-result' })
-	.when("/show/profile/:storename/:storeID/:guid/", { templateUrl:$tu+'/show' })
+	.when("/", { templateUrl:$tu+'/home' })//id/:blockID/guid/:blockguid/category/:catid/r/:startindex/:endIndex/:location/
+	.when("/search/", { templateUrl:$tu+'/search-result' })
+	.when("/handpicked/", { templateUrl:$tu+'/handpicked' })
+	.when("/popular/", { templateUrl:$tu+'/popular' })
+	.when("/show/profile/:storename/:storeid/:guid/", { templateUrl:$tu+'/show' })
 	.when("/unsupportedscreen", { templateUrl:$tu+'/unsupportedscreen/' })
 	.otherwise({
 		redirectTo:"/"
 	})
 	
 	$facebookProvider.setAppId('793762427404557');
+	$facebookProvider.setPermissions("public_profile");
 	GooglePlusProvider.init({
         clientId: '393978119485-6j14o11ndo58jhnaqhir1lgb4hmvkpih.apps.googleusercontent.com',
         apiKey: 'AIzaSyBkRzmfedoJ2knAFsyxdhH5AuW41ljbu6E'
      });
-	/*$authProvider.facebook({
-		clientId:'793762427404557'
-	})
-	
-	$authProvider.google({
-      clientId: '393978119485-6j14o11ndo58jhnaqhir1lgb4hmvkpih.apps.googleusercontent.com'
-    })
-    // Facebook
-	$authProvider.facebook({
-	  name: 'facebook',
-	  url: '/auth/',//facebook
-	  authorizationEndpoint: 'https://www.facebook.com/v2.5/dialog/oauth',
-	  redirectUri: window.location.origin + '/',
-	  requiredUrlParams: ['display', 'scope'],
-	  scope: ['email','public_profile'],
-	  scopeDelimiter: ',',
-	  display: 'popup',
-	  type: '2.0',
-	  popupOptions: { width: 580, height: 400 }
-	});*/
-	
+
 	$locationProvider.html5Mode(true).hashPrefix('!');
 	$httpProvider.defaults.withCredentials = true;
 }])
@@ -85,19 +68,61 @@ function($routeProvider, $locationProvider ,$facebookProvider, GooglePlusProvide
 /*******************8SEARCHING ******************************/
 
 	$rootScope.categoriesList=[
-		{id:1, name:'Spa'},
-		{id:2, name:'Salon'},
-		{id:3, name:'Gym'},
-		{id:8, name:'MakeUp Artists'},
-		{id:6, name:'Slimming and Cosmetology'},
-		{id:9, name:'Dietitians & Nutritionists'},
-		{id:14, name:'Tatto & Piercing'},
-		{id:10, name:'Yoga & Aerobics'},
-		{id:11, name:'Nail Art'},
-		{id:13, name:'Mehendi'}
+		{id:1, name:'Spa',text:'Time waits here'},
+		{id:2, name:'Salon',text:'Cut Above the Rest'},
+		{id:3, name:'Gym',text:'Shape up. Build up'},
+		{id:8, name:'MakeUp Artists',text:'The Eye Candy'},
+		{id:6, name:'Slimming and Cosmetology',text:'Your look has come'},
+		{id:9, name:'Dietitians & Nutritionists',text:'Eat right Look Bright'},
+		{id:14, name:'Tatto & Piercing',text:'Art the body'},
+		{id:10, name:'Yoga & Aerobics',text:'Fitness with peace'},
+		{id:11, name:'Nail Art',text:'Cult in the making'},
+		{id:13, name:'Mehendi',text:'The classy traditional'}
 	]
+	/*$rootScope.popular=[
+		{
+			name:'South Delhi',
+			background:'images/popular/south-delhi.jpg'
+		},
+		{
+			name:'Gurgaon',
+			background:'images/popular/gurgaon.jpg'
+		},
+		{
+			name:'West Delhi',
+			background:'images/popular/west-delhi.jpg'
+		},
+		{
+			name:'Noida',
+			background:'images/popular/noida.jpg'
+		},
+		{
+			name:'North Delhi',
+			background:'images/popular/north-delhi.jpg'
+		},
+		{
+			name:'Ghaziabad',
+			background:'images/popular/ghaziabad.jpg'
+		},
+		{
+			name:'East Delhi',
+			background:'images/popular/east-delhi.jpg'
+		},
+		{
+			name:'Central Delhi',
+			background:'images/popular/central-delhi.jpg'
+		},
+		{
+			name:'Faridabad',
+			background:'images/popular/faridabad.jpg'
+		}
+
+	];*/
 	$rootScope.getCategory=function(id){
 		var out=null;
+		if(!_.isNumber(id)){
+			id=id.split(",")[0];
+		}
 		angular.forEach($rootScope.categoriesList,function(val, key){
 			if(val.id==id){ out=val; return;}
 
@@ -111,35 +136,34 @@ function($routeProvider, $locationProvider ,$facebookProvider, GooglePlusProvide
 	$rootScope.stores={
 		query:{// store search based on blockid & guid
 			//no aminities or brandname
-			blockID:'',
+			blockid:'',
 			blockguid:'',
 			catid:'',
 			startindex:1,
-			endIndex:10,
+			endindex:10,
 			sortby:null
 		},
 		filteredQuery:{
-			blockID:'',
+			blockid:'',
 			blockguid:'',
 			catid:'',
 			startindex:1,
-			endIndex:10,
+			endindex:10,
 			sortby:null,
 			aminities:null,
 			brandname:null
 		},
 		storeDetails:{ // store details based on storeid & guid
-			storeID:'',
+			storeid:'',
 			guid:''
 		}
 	}
 	
 	$rootScope.selectBlock = function(id, guid, name) { //set block id n guid on click
-		$rootScope.stores.query.blockID=id;
+		$rootScope.stores.query.blockid=id;
 		$rootScope.stores.query.blockguid=guid;
-		$rootScope.stores.filteredQuery.blockID=id;	
+		$rootScope.stores.filteredQuery.blockid=id;	
 		$rootScope.stores.filteredQuery.blockguid=guid;
-
 		$rootScope.location.query.location=name;
 	}
 	$rootScope.selectCategory=function(id, name){
@@ -151,19 +175,22 @@ function($routeProvider, $locationProvider ,$facebookProvider, GooglePlusProvide
 
 	$rootScope.search = function() {
      
+			$location.path('/search/');
+			var x=$rootScope.stores.query;
+			$location.search({
+				blockid:x.blockid,
+				blockguid:x.blockguid,
+				catid:x.catid,
+				startindex:x.startindex,
+				endindex:x.endindex,
+				location:$rootScope.location.query.location
+			});
 
-            $location.path('/search/id/'
-            	+$rootScope.stores.query.blockID+"/guid/"
-            	+$rootScope.stores.query.blockguid+"/category/"
-            	+$rootScope.stores.query.catid+"/r/"
-            	+$rootScope.stores.query.startindex+"/"
-            	+$rootScope.stores.query.endIndex+"/"
-            	+$rootScope.location.query.location
-            	);
             $('#modal-search').modal('hide');
 
             /**/
     }	
+
     $rootScope.getBlockList = function() {
            //alert('This is just test. After only data input it will proceed further.');
            // $location.path('/search/test');
@@ -175,7 +202,7 @@ function($routeProvider, $locationProvider ,$facebookProvider, GooglePlusProvide
     	angular.forEach($rootScope.location.locationList, function( value,key, obj){
     		
     		if(newval===value.locationName){
-    			console.log(value.locationName);	
+    			//console.log(value.locationName);	
     			$rootScope.location.locationList=[];
     			stop=true
     			return false;		
