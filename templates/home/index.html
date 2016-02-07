@@ -53,49 +53,49 @@
 			<h3>Gym</h3>
 		</div>	
 	</section>
-	<section class="col-c" >
+	<section class="col-c" ng-show="!hc.sm_hp">
 		<div class="image-container" style="background-image:url(images/photoclub1.jpg);background-position: -1079px 0;"
 		ng-click="hc.visithandPicked('8')">
 			<h4>The Eye Candy</h4>
 			<h3>Makeup Artist</h3>
 		</div>	
 	</section>
-	<section class="col-c" >
+	<section class="col-c" ng-show="!hc.sm_hp">
 		<div class="image-container" style="background-image:url(https://static.lookplex.com/images/1.2/collections/photoclub3.jpg);background-position: -1079px 0;"
 		ng-click="hc.visithandPicked('11')">
 			<h4>Cult in the making</h4>
 			<h3>Nail Art</h3>
 		</div>	
 	</section>
-	<section class="col-c" >
+	<section class="col-c" ng-show="!hc.sm_hp">
 		<div class="image-container" style="background-image:url(images/photoclub1.jpg);    background-position: -1429px -30px;"
 		ng-click="hc.visithandPicked('7')">
 			<h4>Your look has come</h4>
 			<h3>Slimming & Cosmetology</h3>
 		</div>	
 	</section>
-	<section class="col-c" >
+	<section class="col-c" ng-show="!hc.sm_hp">
 		<div class="image-container" style="background-image:url(images/photoclub1.jpg);    background-position: -1779px -40px;"
 		ng-click="hc.visithandPicked('9')">
 			<h4>Eat Right Look Bright</h4>
 			<h3>Dieticians & Nutritionists</h3>
 		</div>	
 	</section>
-	<section class="col-c" >
+	<section class="col-c" ng-show="!hc.sm_hp">
 		<div class="image-container" style="background-image:url(https://static.lookplex.com/images/1.2/collections/photoclub3.jpg);    background-position: -1429px -20px;"
 		ng-click="hc.visithandPicked('14')">
 			<h4>Art the body</h4>
 			<h3>Tattoo & Piercing</h3>
 		</div>	
 	</section>
-	<section class="col-c" >
+	<section class="col-c" ng-show="!hc.sm_hp">
 		<div class="image-container" style="background-image:url(https://static.lookplex.com/images/1.2/collections/photoclub3.jpg);    background-position: -1780px -80px;"
 		ng-click="hc.visithandPicked('10')">
 			<h4>Fitness with peace</h4>
 			<h3>Yoga & Aerobics</h3>
 		</div>	
 	</section>
-	<section class="col-c" >
+	<section class="col-c" ng-show="!hc.sm_hp">
 		<div class="image-container" style="background-image:url(https://static.lookplex.com/images/1.2/collections/photoclub3.jpg);    background-position: -730px -80px;"
 		ng-click="hc.visithandPicked('13')">
 			<h4>The classy traditional</h4>
@@ -106,7 +106,7 @@
 	<section class="col-b">
 		<a class="btn btn-link" ng-if="!hc.sm_hp" ng-click="hc.togglemore(2)"
 		>See Less</a>
-		<a class="btn btn-link" ng-if="hc.sm_hp">See More</a>
+		<a class="btn btn-link" ng-if="hc.sm_hp" ng-click="hc.togglemore(2)">See More</a>
 	</section>
 
 	<section class="col-b">
