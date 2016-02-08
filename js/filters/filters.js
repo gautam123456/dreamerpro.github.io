@@ -36,8 +36,21 @@ angular.module('lookplex')
 
 		out=objects.split('');
 		out.splice(2,0,":");
-		out.splice(9,0,":");
+		out.splice(10,0,":");
 		return out.join("");
+	}
+
+})
+.filter('fortyfivechar', function() {
+	//var option={name:'D\'',types:[],locations:[]};
+	
+	return function(objects,option){
+		var out=objects;
+		if(out.length>45){
+			out=out.substring(0,45)+"...";
+		}
+		
+		return out;
 	}
 
 })

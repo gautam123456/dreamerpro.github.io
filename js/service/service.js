@@ -38,6 +38,9 @@ angular.module('lookplex')
 		login:function(_fbid,_gpid,_token,_platform){
     	//console.log(_fbid,_gpid,_token,_platform);
     	
+    	SessionService.set('platform',_platform);
+    	SessionService.set('token',_token);
+
     	var promise= $http({
     		method: 'POST',
     		url: 'https://storeapi.lookplex.com/ws/masnepservice/saveCust',

@@ -1,7 +1,7 @@
 angular.module('lookplex',['ngRoute','ngPhotoswipe','ngMap','ngFacebook','googleplus'])
-.config(['$routeProvider','$locationProvider','$facebookProvider','GooglePlusProvider','$httpProvider', 
+.config(['$routeProvider','$locationProvider','$facebookProvider','GooglePlusProvider','$httpProvider','$sceDelegateProvider', 
 
-function($routeProvider, $locationProvider ,$facebookProvider, GooglePlusProvider,$httpProvider) {
+function($routeProvider, $locationProvider ,$facebookProvider, GooglePlusProvider,$httpProvider,$sceDelegateProvider) {
 	$tu="templates/";
 	$routeProvider
 	.when("/", { templateUrl:$tu+'/home' })//id/:blockID/guid/:blockguid/category/:catid/r/:startindex/:endIndex/:location/
@@ -9,6 +9,15 @@ function($routeProvider, $locationProvider ,$facebookProvider, GooglePlusProvide
 	.when("/handpicked/", { templateUrl:$tu+'/handpicked' })
 	.when("/popular/", { templateUrl:$tu+'/popular' })
 	.when("/show/profile/:storename/:storeid/:guid/", { templateUrl:$tu+'/show' })
+	.when("/aboutus", { templateUrl:$tu+'/aboutus/' })
+	.when("/careers", { templateUrl:$tu+'/careers/' })
+	.when("/contactus", { templateUrl:$tu+'/contactus/' })
+	.when("/advertise", { templateUrl:$tu+'/advertise/' })
+	.when("/freelisting", { templateUrl:$tu+'/freelisting/' })
+	.when("/termsofservice", { templateUrl:$tu+'/termsofservice/' })
+	.when("/privacypolicy", { templateUrl:$tu+'/privacypolicy/' })
+	.when("/termsofservice", { templateUrl:$tu+'/termsofservice/' })
+	.when("/feedback", { templateUrl:$tu+'/feedback/' })
 	.when("/unsupportedscreen", { templateUrl:$tu+'/unsupportedscreen/' })
 	.otherwise({
 		redirectTo:"/"
@@ -23,9 +32,17 @@ function($routeProvider, $locationProvider ,$facebookProvider, GooglePlusProvide
 
 	$locationProvider.html5Mode(true).hashPrefix('!');
 	$httpProvider.defaults.withCredentials = true;
+
+	$sceDelegateProvider.resourceUrlWhitelist([
+		   // Allow same origin resource loads.
+		   'self',
+		   // Allow loading from our assets domain.  Notice the difference between * and **.
+		   'https://lookplex.com/templates/**']);
+
+
 }])
 
-.run(function($rootScope, $location, $http){
+.run(function($rootScope, $location, $http, SessionService){
 	$rootScope.env="production";
 	
 //load fb sdk
@@ -52,11 +69,16 @@ function($routeProvider, $locationProvider ,$facebookProvider, GooglePlusProvide
         	$rootScope.islanding=true;
         }
         else{
-
+        	
         	if(url.indexOf("/search")>-1){$rootScope.showFilter=true;}
         	else{$rootScope.showFilter=false;}
-
-        	$rootScope.islanding=false;
+        	if(url.indexOf('/#discover')>-1 || url.indexOf('/#popular')>-1){
+        		$rootScope.islanding=true;
+        	}
+        	else{
+        		$rootScope.islanding=false;	
+        	}
+        	
         	
         }
 
@@ -165,6 +187,7 @@ function($routeProvider, $locationProvider ,$facebookProvider, GooglePlusProvide
 		$rootScope.stores.filteredQuery.blockid=id;	
 		$rootScope.stores.filteredQuery.blockguid=guid;
 		$rootScope.location.query.location=name;
+		$rootScope.focuscategory=true;
 	}
 	$rootScope.selectCategory=function(id, name){
 		//console.log(id, name);
@@ -175,6 +198,7 @@ function($routeProvider, $locationProvider ,$facebookProvider, GooglePlusProvide
 
 	$rootScope.search = function() {
      
+
 			$location.path('/search/');
 			var x=$rootScope.stores.query;
 			$location.search({
@@ -191,6 +215,9 @@ function($routeProvider, $locationProvider ,$facebookProvider, GooglePlusProvide
             /**/
     }	
 
+    $rootScope.goToStore=function(store){
+    	$location.path('/show/profile/'+store.storename+'/'+store.id+'/'+store.guid);
+    }
     $rootScope.getBlockList = function() {
            //alert('This is just test. After only data input it will proceed further.');
            // $location.path('/search/test');
@@ -215,6 +242,7 @@ function($routeProvider, $locationProvider ,$facebookProvider, GooglePlusProvide
 
     	if(newval!==undefined){
     		if(newval!==oldval && newval.length>2){
+    			$rootScope.shownotch=true;
 	    		$http({
 	    			method: 'POST',
 				    url: 'https://storeapi.lookplex.com/ws/masnepservice/getLocation',
@@ -224,12 +252,18 @@ function($routeProvider, $locationProvider ,$facebookProvider, GooglePlusProvide
 				    }
 				})
 	    		.success(function(data){
+
 	    			$rootScope.location.locationList=data;
+
 	    		})
 	    		.
 		    	error(function(error){
 		    		alert(error);
-		    	});
+		    	})
+		    	.finally(function(){
+		    		$rootScope.shownotch=false;
+		    	})
+		    	;
 	    	}
 
 	    	if(newval.length<1){
@@ -239,9 +273,8 @@ function($routeProvider, $locationProvider ,$facebookProvider, GooglePlusProvide
     	
     })//location query end
 
-	$rootScope.fblogin=function(){
-
-	}
+	
+	
 
 
 })

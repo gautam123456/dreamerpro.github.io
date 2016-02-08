@@ -152,12 +152,10 @@
 
 
 
-
 <div class="grey-bg">
 	<div class="item s" ng-style="{'background-image': 'url('+sc.storeDetails.coverUrl+')'}">
 		<div class="item-infos pd-5">
-			<span class="pull-right rating" ng-if="sc.storeDetails.drating==''">{{sc.storeDetails.drating}}</span>
-			<span class="pull-right rating" ng-if="sc.storeDetails.drating!=''"> - </span>
+			<span class="pull-right rating">{{sc.storeDetails.totalRatingScore? sc.storeDetails.totalRatingScore:'-'}}</span>
 			<a href="" class="item-name"><h4>{{sc.storeDetails.storename}}</h4></a>
 			<p class="item-cat">{{sc.storeDetails.categoryList | cat_filter: sc.storeDetails.categoryList}}</p>
 			<p class="item-aminities">
@@ -179,23 +177,14 @@
 				</div>
 				<div class="" ng-click='sc.toggleCheckIn(sc.storeDetails.id,sc.storeDetails.guid)'>
 					<i class="fa fa-check"></i>
-					Chek In
+					Chek-In
 				</div>
 				<br>
 			</div>
 		</div>
 		
 	</div><!-- item end -->
-	<div class="item-address col-md-12 panel panel-default ">
-		<h4>Address</h4>
-		<p>{{sc.address}}</p>
-		<!-- <div class="map" id="googleMap">
-			load map here
-		</div> --><!-- center="-25.363882,131.044922" -->
-		<ng-map  center="{{sc.storeDetails.coordinate}}" zoom="11" style="display: block; height: 250px;">
-		    <marker position="{{sc.storeDetails.coordinate}}" title="Hello World!"></marker>
-		</ng-map>
-	</div>
+	
 
 	<div class="item-services col-md-12 panel panel-default ">
 		<h4>Book Services</h4>
@@ -217,10 +206,15 @@
 	<div class="item-photos col-md-12 panel panel-default clearfix">
 		<h4 id="rc">Rate Card</h4>
 		 <h5 ng-if='sc.storeRateCard.length<1'>Sorry no rate cards available at the moment. <br> </h5>
-		<div class="photos clearfix">
+		<div class="photos clearfix" ng-init="sc.ratephotos=false;sc.storephotos=false">
 	       
-			<div class="col-xs-2" ng-repeat="s in sc.storeRateCard track by $index" ng-click="sc.showGallery($index)">
+			<div class="col-xs-2" ng-repeat="s in sc.storeRateCard track by $index" ng-click="sc.showGallery($index)" ng-hide="$index>3 && !sc.ratephotos">
 				<div style="background-image:url({{ s.src }})"></div>
+			</div>
+			<div class="col-xs-2" ng-hide="sc.ratephotos || sc.storeRateCard.length<5" ng-click="sc.ratephotos=true">
+				<div style="background-color:rgba(0,0,0,0.5)">
+					<h4 style="display:inline-block; margin-top:30px; color:#fff">+ {{sc.storeRateCard.length-4}} more<h4>
+				</div>
 			</div>
 			
 			<ng-photoswipe
@@ -236,8 +230,13 @@
 		<h5 ng-if='sc.storePhotos.length<1'>Sorry no photos available at the moment. <br> </h5>
 		<div class="photos clearfix" > 
 			
-			<div class="col-xs-2" ng-repeat="s in sc.storePhotos track by $index" ng-click="sc.showGallery($index)">
+			<div class="col-xs-2" ng-repeat="s in sc.storePhotos track by $index" ng-click="sc.showGallery($index)" ng-hide="$index>3 && !sc.storephotos">
 				<div style="background-image:url({{ s.src }})"></div>
+			</div>
+			<div class="col-xs-2" ng-hide="sc.storephotos|| sc.storePhotos.length<5" ng-click="sc.storephotos=true">
+				<div style="background-color:rgba(0,0,0,0.5)">
+					<h4 style="display:inline-block; margin-top:30px; color:#fff">+ {{sc.storePhotos.length-4}} more<h4>
+				</div>
 			</div>
 	
 			<ng-photoswipe
@@ -254,31 +253,35 @@
 		<a ng-if="sc.showall" href="" class="text-danger pull-right" ng-click="sc.showall=!sc.showall" >See Less -</a>
 		<h4 >Opening Hours</h4>
 		<div class="clearfix">
-			<p  ng-show="sc.getToday()==1 || sc.showall">
+			<p  ng-show="!sc.showall">
+				<span class="col-xs-6">Today </span> 
+				<span class="col-xs-6">{{sc.getTodayTiming() |time_filter:sc.storeDetails.mondayTiming}}
+			</p>
+			<p  ng-show=" sc.showall" ng-class="{'bold':sc.getToday()==1}">
 				<span class="col-xs-6">Monday </span> 
 				<span class="col-xs-6">{{sc.storeDetails.mondayTiming |time_filter:sc.storeDetails.mondayTiming}}
 			</p>
-			<p ng-show="sc.getToday()==2 || sc.showall">
+			<p ng-show="sc.getToday()==2 || sc.showall" ng-class="{'bold':sc.getToday()==2}">
 				<span class="col-xs-6">Tuesday</span> 
 				<span class="col-xs-6">{{sc.storeDetails.tuesdayTiming |time_filter:sc.storeDetails.tuesdayTiming}}</span> 
 			</p>
-			<p ng-show="sc.getToday()==3 || sc.showall">
+			<p ng-show="sc.getToday()==3 || sc.showall" ng-class="{'bold':sc.getToday()==3}">
 				<span class="col-xs-6">Wednesday</span> 
 				<span class="col-xs-6">{{sc.storeDetails.wednesdayTiming |time_filter:sc.storeDetails.wednesdayTiming}}</span> 
 			</p>
-			<p ng-show="sc.getToday()==4 || sc.showall">
+			<p ng-show="sc.getToday()==4 || sc.showall" ng-class="{'bold':sc.getToday()==4}">
 				<span class="col-xs-6">Thursday</span> 
 				<span class="col-xs-6">{{sc.storeDetails.thursdayTiming |time_filter:sc.storeDetails.thursdayTiming}}</span> 
 			</p>
-			<p ng-show="sc.getToday()==5 || sc.showall">
+			<p ng-show="sc.getToday()==5 || sc.showall" ng-class="{'bold':sc.getToday()==5}">
 				<span class="col-xs-6">Friday</span> 
 				<span class="col-xs-6">{{sc.storeDetails.fridayTiming |time_filter:sc.storeDetails.fridayTiming}}</span> 
 			</p>
-			<p ng-show="sc.getToday()==6 || sc.showall">
+			<p ng-show="sc.getToday()==6 || sc.showall" ng-class="{'bold':sc.getToday()==6}">
 				<span class="col-xs-6">Saturday</span> 
 				<span class="col-xs-6">{{sc.storeDetails.saturdayTiming |time_filter:sc.storeDetails.saturdayTiming}}</span> 
 			</p>
-			<p ng-show="sc.getToday()==7 || sc.showall">
+			<p ng-show="sc.getToday()==0 || sc.showall" ng-class="{'bold':sc.getToday()==0}">
 				<span class="col-xs-6">Sunday</span> 
 				<span class="col-xs-6">{{sc.storeDetails.sundayTiming |time_filter:sc.storeDetails.sundayTiming}}</span> 
 			</p>
@@ -293,8 +296,23 @@
 		<p><i class="fa" ng-class="sc.getClasses('parking')"></i> Parking Available</p>
 		<p><i class="fa" ng-class="sc.getClasses('wifi')"></i> Wi-Fi available</p>
 		<p><i class="fa" ng-class="sc.getClasses('credit')"></i> Accepts Credit/ Debit Card</p>
-		<p><i class="fa fa-check-circle-o text-success"></i> Pets Available</p>
+		<p><i class="fa fa-check-circle-o text-success"></i> Pets Allowed</p>
 		<br>
+
+	<div class="item-address col-md-12 panel panel-default ">
+		<h4>Address</h4>
+		<p>{{sc.storeDetails.address}}</p>
+		<!-- <div class="map" id="googleMap">
+
+			load map here
+		</div> --><!-- center="-25.363882,131.044922" -->
+		<ng-map  center="{{sc.storeDetails.coordinate}}" zoom="11" style="display: block; height: 250px;">
+		    <marker position="{{sc.storeDetails.coordinate}}" title="Map!"></marker>
+		</ng-map>
+	</div>
+
+
+
 		<h4 id="re">REVIEWS</h4>
 		<div class="blue-bg cp"><!--style in reset -->
 			<h3 class="wt mt4 "  ng-init="sc.writeReview=false" ng-click="sc.writeReview=!sc.writeReview">Write a Review</h3>
@@ -307,13 +325,30 @@
 					<span class="pull-right">{{sc.myrating}} stars</span>
 			</div>
 			<textarea class="form-control" ng-model="sc.myreview" placeholder="Minimun 100 and maximum 300 characters allowed."></textarea>
+			<small class="text-danger">{{sc.reviewMsg}}</small>
 			<div class="panel-footer">
 				<button class="btn btn-white" style="height: 50px;" ng-click="sc.cancelReview()">Cancel</button>
 				<button class="btn btn-blue pull-right" ng-click="sc.saveReview()">Submit</button>
 			</div>
 		</div>
 		<div class="list-group">
-			<div class="list-group-item" ng-repeat="review in sc.allreviews">{{review}}</div>
+			<div class="list-group-item" ng-repeat="review in sc.storereviews">
+				<div class="media">
+					  <div class="media-left">
+					    <a href="">
+					<img ng-if="review.customerPhoto" width="80px" style="border-radius:40px" class="media-object" ng-src="https://s3-us-west-2.amazonaws.com/profilelplex/{{review.customerPhoto}}" alt="userpic">
+					<img ng-if="!review.customerPhoto" width="80px" style="border-radius:40px" class="media-object" ng-src="{{review.review.customerPhotolocal}}" alt="userpic">
+					
+					    </a>
+					  </div>
+					  <div class="media-body">
+					  	<span class="pull-right text-danger"><small><small>{{review.timeStamp}}</small></small></span> 
+					    <h4 class="media-heading">{{review.customerName}}</h4>
+					    <p><b><i>Rated {{review.rating}} stars </i></b> {{review.stringComment}}</p>
+
+					  </div>
+					</div>
+			</div>
 		</div>
 		<br>
 		<h4 id="tr">Trust</h4>
@@ -327,7 +362,7 @@
 				Reviews
 			</div>
 			<div class="col-xs-4 ">
-				<div class="sq-box blue-bg">{{'0'}}</div>
+				<div class="sq-box blue-bg">{{sc.storeDetails.trust?sc.storeDetails.trust: '0'}}</div>
 				Favourites
 			</div>
 		</div>

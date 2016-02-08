@@ -16,12 +16,14 @@ angular.module('lookplex')
 	that.lkey='';//tpbe sent empty
 	that.isCheckedIn=false;
 
-	that.allreviews=[];
+	that.storereviews=[];
+	that.reviewMsg='';
 	$scope.$on('$routeUpdate', function(scope, next, current) {
    		// Minimize the current widget and maximize the new one
    		console.log('hello');
 	});
 	//GET Store details
+	$("#modalspinner").modal('show');
 	$http({
 	    	method: 'POST',
 			url: 'https://storeapi.lookplex.com/ws/masnepservice/getstoredetails',
@@ -36,10 +38,15 @@ angular.module('lookplex')
 		})
 		.error(function(data){
 			console.log(data)
-	});
+		})
+		.finally(function(){
+			$("#modalspinner").modal('hide');
+		})
+		;
 
 	//GET RATE CARD
 
+	$("#modalspinner").modal('show');
 	$http({
     	method: 'POST',
 		url: 'https://storeapi.lookplex.com/ws/masnepservice/getratecard',
@@ -61,10 +68,13 @@ angular.module('lookplex')
 	.error(function(data){
 		console.log(data)
 	})
+	.finally(function(){
+		$("#modalspinner").modal('hide');
+	})
 
 
 	//GET STORE PHOTOS
-
+	
 	$http({
     	method: 'POST',
 		url: 'https://storeapi.lookplex.com/ws/masnepservice/getstorephotos',
@@ -85,12 +95,28 @@ angular.module('lookplex')
 	.error(function(data){
 		console.log(data)
 	})
+	.finally(function(){
+		$("#modalspinner").modal('hide');
+	})
+
 
 	//get now
 	this.getToday=function(){
 		var date = new Date(_.now());//var month = date.getMonth();		
 		var day=date.getDay();
+		console.log(day);
 		return day;
+	}
+	//storeDetails.mondayTiming
+	this.getTodayTiming=function(){
+		var t=that.getToday();
+		if(t==0){return that.storeDetails.sundayTiming;}
+		if(t==1){return that.storeDetails.mondayTiming;}
+		if(t==2){return that.storeDetails.tuesdayTiming;}
+		if(t==3){return that.storeDetails.wednesdayTiming;}
+		if(t==4){return that.storeDetails.thursdayTiming;}
+		if(t==5){return that.storeDetails.fridayTiming;}
+		if(t==6){return that.storeDetails.saturdayTiming;}
 	}
 
 	/*get review for store*/
@@ -100,7 +126,7 @@ angular.module('lookplex')
 				storeid:$routeParams.storeid
 			}))
 			.then(
-				function(data){console.log(data);that.allreviews=data.activityList;},
+				function(data){that.storereviews=data.data.activityList; /*console.log(data,that.storereviews); */},
 				function(data){console.log(data);}
 			);
 
@@ -110,7 +136,8 @@ angular.module('lookplex')
   	this.startEvent = 'START_GALLERY';
 
   	this.opts = {
-    	index: 0
+    	index: 0,
+    	shareEl: false,
   	};
 
   	this.showGallery = function (i) {
@@ -136,11 +163,7 @@ angular.module('lookplex')
 			return 'fa-times-circle text-danger';
 		}
 	}
-	/*SCROLL IF HASH PRESENT*/
-	if(that.hashid){
-		$location.hash(that.hashid);
-     	$anchorScroll();
-	}
+	
 	/*REVIEW AND RATING*/
 	this.setRate=function(val){
 		that.myrating=val;
@@ -162,6 +185,7 @@ angular.module('lookplex')
 		that.writeReview=true;
 	}
 	this.toggleBookmark=function(_storeid,_storeguid){
+		$("#modalspinner").modal('show');
 		if(!that.isBookmarked){
 			$http.post('https://storeapi.lookplex.com/ws/masnepservice/saveBookmark',
 			$.param({
@@ -174,9 +198,14 @@ angular.module('lookplex')
 				function(data){console.log(data);	},
 				function(data){console.log(data); }
 			)
+			.finally(function(){
+				$("#modalspinner").modal('hide');
+			})
+
 
 		}
 		else{
+
 			$http.post('https://storeapi.lookplex.com/ws/masnepservice/deleteBookmark',
 			$.param({
 				platform:SessionService.get('platform'),
@@ -188,12 +217,16 @@ angular.module('lookplex')
 				function(data){console.log(data);},
 				function(data){console.log(data);}
 			)
+			.finally(function(){
+				$("#modalspinner").modal('hide');
+			})
 		}
 		
 	}
 
 	this.toggleCheckIn=function(_storeid,_storeguid){
 		console.log('check in '+that.isCheckedIn);
+		$("#modalspinner").modal('show');
 		if(!that.isCheckedIn){
 			$http.post('https://storeapi.lookplex.com/ws/masnepservice/saveCheckin',
 			$.param({
@@ -206,6 +239,9 @@ angular.module('lookplex')
 				function(data){console.log(data);	},
 				function(data){console.log(data); }
 			)
+			.finally(function(){
+				$("#modalspinner").modal('hide');
+			})
 
 		}
 		else{
@@ -220,27 +256,63 @@ angular.module('lookplex')
 				function(data){console.log(data);},
 				function(data){console.log(data);}
 			)
+			.finally(function(){
+				$("#modalspinner").modal('hide');
+			})
 		}
 		
 	}//
 	/*save review*/
 	this.saveReview=function(_storeid,_storeguid){
+		that.reviewMsg='';
+		
+		if(that.myrating==='-' || !that.myrating){
+			that.reviewMsg+='You must rate before review. ';console.log('here');
+			return false;
+		}
+		if(that.myreview.length<100){
+			that.reviewMsg+='Comment should be at least 100 characters. ';console.log('thehere');
+			return false;
+		}
+		
 
 			$http.post('https://storeapi.lookplex.com/ws/masnepservice/saveReview',
 			$.param({
 				platform:SessionService.get('platform'),
 				token:SessionService.get('token'),
-				storeguid:_storeguid,
-				storeid:_storeid,
+				storeguid:$routeParams.guid,
+				storeid:$routeParams.storeid,
 				comment:that.myreview,
 				rating:that.myrating
 			}))
 			.then(
-				function(data){console.log(data); that.myrating="-";that.myreview="";},
-				function(data){console.log(data); }
+				function(data){
+					console.log(data);
+					that.myrating="-";
+					that.myreview="";
+					that.storereviews.push(
+						{rating:that.myrating,
+						comment:that.myreview,
+						customerName:SessionService.get('username'),
+						customerPhotolocal:SessionService.get('profile_pic'),
+						timeStamp:_.now()
+					})
+				},
+				function(data){console.log(data); that.reviewMsg="There was an error posting review.";}
+
 			)
 
 	}
+
+
+
+	/*SCROLL IF HASH PRESENT*/
+
+	 $location.hash(that.hashid);
+     $anchorScroll();
+
+
+
 	
 
 })
@@ -322,7 +394,7 @@ angular.module('lookplex')
 		}
 
 	];
-	this.handpicked=[
+/*	this.handpicked=[
 		{
 			name:'Salon',
 			sub:'Cut Above the Rest',
@@ -345,7 +417,7 @@ angular.module('lookplex')
 		},
 		
 
-	];
+	];*/
 
 	this.visithandPicked=function(_catid){
 		$location.path('/handpicked');
@@ -431,7 +503,9 @@ angular.module('lookplex')
 		
 	}/*switch end*/
 	//$location.search($scope.searchParam);
-
+	
+	/*--------------*/
+	$("#modalspinner").modal('show');
 	$http.get('/js/data/city.json')
 	.success(function(data){
 		_self.city=data;
@@ -444,6 +518,10 @@ angular.module('lookplex')
 			$location.search($scope.searchParam);		
 		}
 
+
+	})
+	.finally(function(){
+		$("#modalspinner").modal('hide');
 	})
 	
 	//$scope.searchParam.catids=$scope.searchParam.catids.split(",");
@@ -466,13 +544,19 @@ angular.module('lookplex')
 				console.log(data);
 			}
 		)
+		.finally(function(){
+			$("#modalspinner").modal('hide');
+		})
 
 	this.getCityName=function(_cityid){
 		var out="";
+
 		angular.forEach(_self.city, function(val,key,object){
 			if(val.cityid==_cityid){
+				//console.log(_cityid,val.cityid);
 				out=val.cityname;
 			}
+
 		})
 		return out;
 	}
@@ -482,6 +566,10 @@ angular.module('lookplex')
 		$scope.searchParam.cityid=id;
 		$scope.searchParam.cityguid=guid;
 		$location.search($scope.searchParam);
+	}
+	this.isCityActive=function(_cityid){
+		console.log(_cityid==$location.search().cityid,_cityid,$location.search().cityid)
+		return _cityid==$location.search().cityid;
 	}
 
 
@@ -556,6 +644,7 @@ angular.module('lookplex')
 	}/*switch end*/
 	//$location.search($scope.searchParam);
 
+	$("#modalspinner").modal('show');
 	$http.get('/js/data/city.json')
 	.success(function(data){
 		_self.city=data;
@@ -569,10 +658,15 @@ angular.module('lookplex')
 		}
 
 	})
+	.finally(function(){
+		$("#modalspinner").modal('hide');
+	})
 	
 	//$scope.searchParam.catids=$scope.searchParam.catids.split(",");
 
 	console.log($scope.searchParam);
+
+	$("#modalspinner").modal('show');
 	$http({
 		url: 'https://storeapi.lookplex.com/ws/masnepservice/getsponsoredlistforAdvertisement', 
 		method:'POST',
@@ -591,6 +685,10 @@ angular.module('lookplex')
 				console.log(data);
 			}
 		)
+	.finally(function(){
+		$("#modalspinner").modal('hide');
+	})
+
 
 	this.getCityName=function(_cityid){
 		var out="";
@@ -601,6 +699,7 @@ angular.module('lookplex')
 		})
 		return out;
 	}
+	
 
 	this.createLink=function(catid){
 		//console.log(id, guid);
@@ -626,15 +725,17 @@ angular.module('lookplex')
 .controller('SearchResultCtrl', function( $scope, $rootScope, $http, $location){
 	var that=this;
 
-	this.resultList=null;
+	this.resultList=[];
 	this.brandList=[];
 	this.aminityList=[];
+	that.showLoadmore=false;
 	//this.showFilters=$rootScope.showFilters;
 	//console.log($location.search());
 	
 	$scope.searchParam=$location.search();
 	
 	$scope.$watch('searchParam', function(newval,oldval){
+		$("#modalspinner").modal('show');
 		$http({
 	    	method: 'POST',
 			url: 'https://storeapi.lookplex.com/ws/masnepservice/geftstores',
@@ -649,9 +750,14 @@ angular.module('lookplex')
 	    	})
 	    	.error(function(error){
 		    	console.log(error);
-		    });
+		    })
+		    .finally(function(){
+		    	$("#modalspinner").modal('hide');
+		    })
+		    ;
 	})
 
+	$("#modalspinner").modal('show');
 	$http({
 	    	method: 'POST',
 			url: 'https://storeapi.lookplex.com/ws/masnepservice/getstores',
@@ -661,21 +767,32 @@ angular.module('lookplex')
 			}
 			})
 	    	.success(function(data){
-
-	    		that.resultList=data.storeList;
+	    		console.log(data);
+	    		that.resultList.push(data.storeList);
 	    		if(data.storeList.length<1){
 	    			that.resultList=[];
 	    		}
+	    		if(data.count>$location.search().endindex){
+	    			that.showLoadmore=true;	
+	    		}
+	    		else{
+	    			that.showLoadmore=false;	
+	    		}
+	    		
+	    		//$("#modalspinner").modal('hide');
 	    	})
 	    	.error(function(error){
 		    	console.log('here' +error);
-		    });
+		    })
+		    .finally(function(){
+		    	$("#modalspinner").modal('hide');
+		    })
 
 	this.categories=$rootScope.categoriesList;
-	if(this.categories[0].name!=='All'){// add all if not there
+	/*if(this.categories[0].name!=='All'){// add all if not there
 		this.categories.unshift({name:'All',id:0});	
 	}
-	
+	*/
 
 
 	this.isCatActive=function(id){//check if category active
@@ -708,6 +825,7 @@ angular.module('lookplex')
 
 	/*get brand and aminity filter lists*/
 
+	$("#modalspinner").modal('show');
 	this.getbrandaminityList=function(){
 		$http.post('https://storeapi.lookplex.com/ws/masnepservice/getbrandaminityList',$.param({catid:$location.search().catid}))
 		.then(
@@ -719,8 +837,17 @@ angular.module('lookplex')
 				console.log(data);
 			}
 		)
+		.finally(function(){
+		    	$("#modalspinner").modal('hide');
+		})
 	}
 	this.getbrandaminityList();
+
+	this.loadmore=function(){
+		$scope.searchParam.startindex=parseInt($scope.searchParam.endindex)+1;
+		$scope.searchParam.endindex=parseInt($scope.searchParam.endindex)+10;
+		$location.search($scope.searchParam);
+	}
 
 
 })
@@ -855,7 +982,7 @@ angular.module('lookplex')
 
 })
 
-.controller('SideBarCtrl', function($rootScope,$location,$anchorScroll,AuthService){
+.controller('SideBarCtrl', function($rootScope,$location,$anchorScroll,AuthService,SessionService){
 	var _self=this;
 	this.toggleSideBar=function(){
 		$rootScope.sidebar=!$rootScope.sidebar;	
@@ -878,6 +1005,23 @@ angular.module('lookplex')
 	this.isAuthenticated=function(){
 		return AuthService.isloggedIn();
 	}
+
+	this.authuser=null;
+
+	this.getUser=function(){
+
+		if(_self.isAuthenticated()){
+			_self.authuser= {
+				username:SessionService.get('username'),
+				profile_pic:SessionService.get('profile_pic')
+			}
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	this.getUser();
 })
 
 .controller('LoginController', ['GooglePlus','$facebook','$http','AuthService','SessionService',
@@ -885,14 +1029,15 @@ angular.module('lookplex')
 	var _self=this;
 	this.googlelogin = function () {
         GooglePlus.login().then(function (authResult) {
-            console.log(authResult);
+            console.log(authResult.access_token);
 
             GooglePlus.getUser().then(function (user) {
                 console.log(user);
-            
+                
                 AuthService.login(null, user.id, authResult.access_token, 'gplus');
+                
                 SessionService.set('username',user.name);
-                SessionService.set('profile_pic',user.name);
+                SessionService.set('profile_pic',user.picture);
             });
         }, function (err) {
             console.log(err);
@@ -911,10 +1056,9 @@ angular.module('lookplex')
 		      	function(response) {
 		        	this.welcomeMsg = "Welcome " + response.name;
 		        	console.log(response);
+		        	
 		        	SessionService.set('username',response.name);	
-		        	SessionService.set('platform','facebook');
-		        	SessionService.set('token',token);
-		        	SessionService.set('profile_pic','http://graph.facebook.com/'+userID+'/pciture?type=normal');
+		        	SessionService.set('profile_pic','http://graph.facebook.com/'+userID+'/picture?type=normal');
 		      	},
 		      	function(err) {
 		        	this.welcomeMsg = "Please log in";
