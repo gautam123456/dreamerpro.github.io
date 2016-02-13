@@ -152,7 +152,7 @@ a,a:hover{
 }
 .btn-red{
 	background-color: #ff6666;
-	border-bottom: 2px solid #dd0000;
+	border-bottom: 1px solid #dd0000;
 	color: #fff !important;
 
 }
@@ -190,7 +190,7 @@ a,a:hover{
     border: 1px solid #ddd;
     width: 25px;
     height: 25px;
-    margin: 10px 10px;
+    margin: 14px 10px;
 }
 .btn-round i{
     line-height: 15px;
@@ -248,11 +248,14 @@ a,a:hover{
 }
 
 .form-control{
-	border-radius: 0;
+	border-radius: 2px;
+}
+a.list-group-item{
+    padding: 2px 15px;
 }
 .navbar-toggle{
-	padding-left: 10px;
-	padding-top: 10px;
+	padding-left: 15px;
+	padding-top: 5px;
 }
 .logo{
 	display: block;
@@ -271,7 +274,7 @@ a,a:hover{
 	background-image: url(../images/home_jumbotron.jpg);
 	background-repeat: no-repeat;
 	background-blend-mode:darken;
-	background-size: contain;
+	background-size: cover;
 }
 .jumbotron>h2{
 	text-transform: uppercase;

@@ -113,7 +113,7 @@
 
 <header>
 	<span class="pull-left navbar-toggle" ng-click="sidebar=!sidebar"> 
-		<i class="fa fa-bars"></i>
+		<i class="fa fa-bars fa-2x"></i>
 	</span>
 	<div ng-show="islanding">
 		<div class="clearfix logo">
@@ -123,8 +123,8 @@
 	<div ng-show="!islanding" class="clearfix">
 		<div class="btn btn-round pull-right" ng-show="showFilter" ng-click="showFilters=!showFilters"><i class="fa fa-filter"></i></div>
 		<div class="block">
-			<div class="form-group" id="search-bar"  data-toggle="modal"  data-target="#modal-search" >
-			<button class="btn btn-red pull-right" ><i class="fa fa-search "></i></button>
+			<div class="form-group" id="search-bar"  data-toggle="modal"  data-target="#modal-search">
+			<button class="btn btn-red pull-right" style="border-radius: 2px"><i class="fa fa-search "></i></button>
 			<input type="search" tabIndex="-1" class="form-control" placeholder="Search grooming services near you">
 			<!-- Need to adjust text align on hover with angular-->
 			</div>
@@ -138,11 +138,11 @@
 		<a href=""><img height="40px" height="40px" class="img-rounded" ng-src="{{sbc.authuser.profile_pic}}"> <span> {{sbc.authuser.username}}</span></a>
 	</div>
 	<div class="list-group">
-		<a class="list-group-item" ng-click="sbc.home()"><h3>Home</h3></a>
-		<a class="list-group-item" data-toggle="modal" data-target="#modallogin" ng-click="sbc.toggleSideBar()" ng-show='!sbc.isAuthenticated()'><h3>Log In</h3></a>
-		<a class="list-group-item" data-toggle="modal" data-target="#modal-search" ng-click="sbc.toggleSideBar()"><h3>Search</h3></a>
-		<a href="http://m.lookplex.com/#discover" target="_self" class="list-group-item" ng-click="sbc.toggleSideBar()" ><h3>Discover</h3></a>
-		<a class="list-group-item" data-toggle="modal" data-target="#modalhiw" ng-click="sbc.toggleSideBar()" ><h3>How it Works</h3></a>
+		<a class="list-group-item" ng-click="sbc.home()"><h4>Home</h4></a>
+		<a class="list-group-item" data-toggle="modal" data-target="#modallogin" ng-click="sbc.toggleSideBar()" ng-show='!sbc.isAuthenticated()'><h4>Log In</h4></a>
+		<a class="list-group-item" data-toggle="modal" data-target="#modal-search" ng-click="sbc.toggleSideBar()"><h4>Search</h4></a>
+		<a href="http://m.lookplex.com/#discover" target="_self" class="list-group-item" ng-click="sbc.toggleSideBar()" ><h4>Discover</h4></a>
+		<a class="list-group-item" data-toggle="modal" data-target="#modalhiw" ng-click="sbc.toggleSideBar()" ><h4>How it Works</h4></a>
 	</div>
 	
 </div>
@@ -193,7 +193,6 @@
 <!-- PHOTOSWIPE -->
 <script type="text/javascript" src="bower_components/photoswipe/dist/photoswipe.js"></script>
 <script type="text/javascript" src="bower_components/photoswipe/dist/photoswipe-ui-default.min.js"></script>
-
 <script type="text/javascript" src="bower_components/ng-photoswipe/angular-photoswipe.js"></script>
 <script src="https://maps.google.com/maps/api/js?libraries=placeses,visualization,drawing,geometry,places"></script>
 <script type="text/javascript" src="js/lib/ng-map.min.js"></script>
